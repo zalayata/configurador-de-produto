@@ -48,7 +48,11 @@ export function PrintSheet() {
     <div className="print-sheet">
       <header className="print-head">
         <div className="print-brand">
-          <strong>{branding.companyName}</strong> · Configurador de produto
+          <img src={`${import.meta.env.BASE_URL}logo-idugel.svg`} alt="" />
+          <div>
+            <strong>{branding.companyName}</strong> · Configurador de produto
+            <div className="print-tagline">{branding.tagline}</div>
+          </div>
         </div>
         <div className="print-date">Gerado em {today}</div>
       </header>
@@ -120,9 +124,13 @@ export function PrintSheet() {
       )}
 
       <footer className="print-foot">
-        Documento gerado pelo configurador — sujeito a análise técnica e proposta comercial.
-        <br />
-        {branding.siteUrl.replace('https://', '')}
+        <p>Documento gerado pelo configurador — sujeito a análise técnica e proposta comercial.</p>
+        <p>
+          {branding.legalName} · CNPJ {branding.cnpj}
+          <br />
+          {branding.address} · {branding.phone} · {branding.siteUrl.replace('https://', '')}
+        </p>
+        <p className="print-signature">{branding.signature}</p>
       </footer>
     </div>
   )

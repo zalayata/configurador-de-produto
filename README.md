@@ -9,7 +9,8 @@ Configurador 3D de equipamentos industriais no estilo do [configurador da Cirrus
 ## O que ele faz
 
 - **Visualizador 3D cinematográfico** — palco escuro com piso refletivo, iluminação de estúdio industrial e câmera que voa para o ângulo certo a cada etapa.
-- **Produto demonstrativo** — um moinho de martelos (carro-chefe da Idugel) gerado proceduralmente, com as linhas Chromium / Titanium / Platinum.
+- **Produto demonstrativo** — um moinho de martelos (carro-chefe da Idugel) gerado proceduralmente, com as linhas oficiais **Titanium** e **Chromium**.
+- **Identidade Idugel** — logomarca (folha com espigas) recriada em SVG e paleta vinho/vermelho institucional (`#D3262C` / `#8B1A1A`) aplicada em toda a interface e na ficha de impressão, seguindo o padrão de documentos do Grupo.
 - **Configuração por etapas** — Produto → Acabamento → Opcionais → Resumo, como no configurador da Cirrus.
 - **Acabamentos reais** — inox 304 escovado, inox polido e pinturas RAL, aplicados por conjunto (corpo, estrutura, motor, painel).
 - **Opcionais visíveis em 3D** — moega ampliada, separador magnético, ciclone de descarga, plataforma de operação, IHM colorida e sinalizador acendem/aparecem na cena.
@@ -68,8 +69,9 @@ Quando quiser servir em domínio próprio (ex.: `configurador.idugel.com.br`), b
 
 | O quê | Onde |
 |---|---|
-| Links, e-mail comercial e WhatsApp | `src/config/branding.ts` |
+| Dados institucionais, links, e-mail e WhatsApp | `src/config/branding.ts` |
 | Cor de destaque e tema | variáveis CSS em `src/styles/global.css` (`--accent`) |
+| Logomarca | `public/logo-idugel.svg` — substitua pelo vetor oficial quando disponível |
 | Acabamentos, grupos, opcionais e linhas | `src/config/product.ts` |
 | Produto demonstrativo 3D | `src/three/DemoModel.tsx` |
 

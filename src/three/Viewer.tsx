@@ -83,7 +83,7 @@ function StageLights() {
         shadow-bias={-0.0002}
       />
       <directionalLight position={[-7, 5, -3]} intensity={0.5} color="#a8c4e0" />
-      <pointLight position={[0, 3.4, -7]} intensity={26} color="#3b8de0" distance={16} />
+      <pointLight position={[0, 3.4, -7]} intensity={24} color="#d3564f" distance={16} />
       {/* Ambiente procedural: estúdio industrial com claraboias — dá vida ao inox */}
       <Environment resolution={512} frames={1}>
         {/* domo base suave para o metal nunca ler como preto */}
@@ -177,11 +177,11 @@ function Floor() {
       {/* anel de palco */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.012, 0]}>
         <ringGeometry args={[4.55, 4.62, 128]} />
-        <meshBasicMaterial color="#3b8de0" transparent opacity={0.4} />
+        <meshBasicMaterial color="#d3262c" transparent opacity={0.45} />
       </mesh>
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.011, 0]}>
         <ringGeometry args={[4.62, 5.0, 128]} />
-        <meshBasicMaterial color="#3b8de0" transparent opacity={0.05} />
+        <meshBasicMaterial color="#d3262c" transparent opacity={0.05} />
       </mesh>
     </>
   )

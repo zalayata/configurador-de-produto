@@ -8,9 +8,11 @@
   --text: #edf1f5;
   --text-dim: #94a1ac;
   --text-faint: #5d6870;
-  --accent: #3b8de0;
-  --accent-hi: #6db1f0;
-  --accent-soft: rgba(59, 141, 224, 0.16);
+  /* Paleta Idugel — vinho/vermelho institucional */
+  --accent: #d3262c;
+  --accent-hi: #f0575b;
+  --accent-deep: #8b1a1a;
+  --accent-soft: rgba(211, 38, 44, 0.15);
   --danger: #e05252;
   --radius: 16px;
   --radius-sm: 10px;
@@ -123,17 +125,30 @@ button {
 }
 
 .brand-mark {
-  width: 30px;
-  height: 30px;
-  color: var(--accent);
+  width: 34px;
+  height: 34px;
+  display: block;
+  filter: drop-shadow(0 2px 8px rgba(211, 38, 44, 0.35));
 }
 
 .brand-name {
+  display: flex;
+  flex-direction: column;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 21px;
-  letter-spacing: 0.16em;
+  font-size: 19px;
+  line-height: 1;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
+}
+
+.brand-name em {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 9px;
+  letter-spacing: 0.42em;
+  color: var(--accent-hi);
+  margin-bottom: 3px;
 }
 
 .brand-divider {
@@ -181,9 +196,9 @@ button {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--accent), #2867ab);
+  background: linear-gradient(135deg, var(--accent), var(--accent-deep));
   color: #fff;
-  box-shadow: 0 6px 22px rgba(59, 141, 224, 0.35);
+  box-shadow: 0 6px 22px rgba(211, 38, 44, 0.35);
 }
 
 .btn-primary:hover {
@@ -724,8 +739,8 @@ button {
 }
 
 .option-card.is-enabled {
-  border-color: rgba(59, 141, 224, 0.55);
-  background: rgba(59, 141, 224, 0.08);
+  border-color: rgba(211, 38, 44, 0.55);
+  background: rgba(211, 38, 44, 0.08);
 }
 
 .option-card-info {
@@ -1102,20 +1117,39 @@ button {
   .print-head {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
-    border-bottom: 2px solid #14181c;
+    align-items: center;
+    border-bottom: 2px solid #aa2c2f;
     padding-bottom: 10px;
     margin-bottom: 18px;
   }
 
   .print-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     font-size: 15px;
     letter-spacing: 0.04em;
   }
 
+  .print-brand img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .print-brand strong {
+    color: #8b1a1a;
+  }
+
+  .print-tagline {
+    font-size: 10px;
+    font-style: italic;
+    color: #8b1a1a;
+    letter-spacing: 0.08em;
+  }
+
   .print-date {
     font-size: 11px;
-    color: #667;
+    color: #595959;
   }
 
   .print-snapshot {
@@ -1130,10 +1164,11 @@ button {
   .print-product {
     font-size: 20px;
     margin-bottom: 2px;
+    color: #8b1a1a;
   }
 
   .print-line {
-    color: #667;
+    color: #4a1515;
     margin-bottom: 12px;
   }
 
@@ -1142,7 +1177,9 @@ button {
     letter-spacing: 0.12em;
     text-transform: uppercase;
     margin: 18px 0 8px;
-    color: #334;
+    color: #8b1a1a;
+    border-bottom: 1px solid #aa2c2f;
+    padding-bottom: 3px;
   }
 
   .print-sheet table {
@@ -1153,20 +1190,34 @@ button {
 
   .print-sheet td {
     padding: 6px 8px;
-    border-bottom: 1px solid #dde;
+    border-bottom: 1px solid #d9c7c7;
+  }
+
+  .print-sheet tr:nth-child(even) td {
+    background: #f5f0f0;
   }
 
   .print-sheet td:first-child {
-    color: #556;
+    color: #4a1515;
+    font-weight: 600;
     width: 45%;
   }
 
   .print-foot {
     margin-top: 26px;
     font-size: 10.5px;
-    color: #778;
-    border-top: 1px solid #dde;
+    color: #595959;
+    border-top: 1px solid #aa2c2f;
     padding-top: 10px;
+  }
+
+  .print-foot p {
+    margin-bottom: 6px;
+  }
+
+  .print-signature {
+    font-style: italic;
+    color: #8b1a1a;
   }
 }
 

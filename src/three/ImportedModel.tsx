@@ -34,7 +34,7 @@ export function ImportedModel() {
           single instanceof THREE.MeshStandardMaterial
             ? single.clone()
             : new THREE.MeshStandardMaterial({ color: '#8899aa' })
-        clone.emissive = new THREE.Color('#2f86dd')
+        clone.emissive = new THREE.Color('#d3262c')
         clone.emissiveIntensity = 0.14
         highlightMaterial.current = clone
         child.material = clone

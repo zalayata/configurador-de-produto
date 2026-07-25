@@ -33,6 +33,15 @@ export const FINISHES: Finish[] = [
     kind: 'inox',
   },
   {
+    id: 'vinho-idugel',
+    label: 'Vinho Idugel',
+    swatch: 'linear-gradient(135deg, #a32026, #7b1f1f)',
+    color: '#8b1a1a',
+    metalness: 0.22,
+    roughness: 0.42,
+    kind: 'pintura',
+  },
+  {
     id: 'ral-5015',
     label: 'Azul céu · RAL 5015',
     swatch: '#2271b3',
@@ -131,14 +140,14 @@ export const PART_GROUPS: PartGroup[] = [
     label: 'Estrutura e base',
     description: 'Base, pés e suportes de sustentação do conjunto.',
     allowed: 'todos',
-    defaultFinish: 'ral-7016',
+    defaultFinish: 'vinho-idugel',
   },
   {
     id: 'motor',
     label: 'Motor e transmissão',
     description: 'Motor elétrico, polias e proteção da transmissão.',
     allowed: 'todos',
-    defaultFinish: 'ral-5015',
+    defaultFinish: 'ral-7016',
   },
   {
     id: 'painel',
@@ -210,19 +219,14 @@ export interface ProductLine {
 
 export const PRODUCT_LINES: ProductLine[] = [
   {
-    id: 'chromium',
-    label: 'Chromium',
-    description: 'Solução econômica com a robustez de mais de 30 anos de experiência.',
-  },
-  {
     id: 'titanium',
     label: 'Titanium',
-    description: 'Linha consagrada, definida pela confiabilidade em operação contínua.',
+    description: 'Excelente custo-benefício, com a robustez de 30 anos de moagem.',
   },
   {
-    id: 'platinum',
-    label: 'Platinum',
-    description: 'O topo da linha, projetada para a Indústria 4.0: automação e eficiência energética.',
+    id: 'chromium',
+    label: 'Chromium',
+    description: 'Alta robustez e recursos de Indústria 4.0 para operação contínua.',
   },
 ]
 

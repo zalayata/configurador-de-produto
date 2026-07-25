@@ -9,14 +9,15 @@ export function TopBar() {
   return (
     <header className="topbar">
       <div className="topbar-brand">
-        <svg className="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
-          <rect width="32" height="32" rx="7" fill="currentColor" opacity="0.14" />
-          <path
-            d="M9 8h4v16H9zM16 8h4.5c4 0 7 3 7 8s-3 8-7 8H16v-4h4.2c1.9 0 3.2-1.6 3.2-4s-1.3-4-3.2-4H16z"
-            fill="currentColor"
-          />
-        </svg>
-        <span className="brand-name">{branding.companyName}</span>
+        <img
+          className="brand-mark"
+          src={`${import.meta.env.BASE_URL}logo-idugel.svg`}
+          alt="Grupo Idugel"
+        />
+        <span className="brand-name">
+          <em>Grupo</em>
+          Idugel
+        </span>
         <span className="brand-divider" />
         <span className="brand-app">Configurador de produto</span>
       </div>
