@@ -48,9 +48,13 @@ export function PrintSheet() {
     <div className="print-sheet">
       <header className="print-head">
         <div className="print-brand">
-          <img src={`${import.meta.env.BASE_URL}logo-idugel.svg`} alt="" />
+          <img
+            className="print-selo"
+            src={`${import.meta.env.BASE_URL}selo-30-anos.png`}
+            alt="Grupo Idugel — 30 anos"
+          />
           <div>
-            <strong>{branding.companyName}</strong> · Configurador de produto
+            <div className="print-doc-type">Configurador de produto</div>
             <div className="print-tagline">{branding.tagline}</div>
           </div>
         </div>

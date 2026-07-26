@@ -10,14 +10,10 @@ export function TopBar() {
     <header className="topbar">
       <div className="topbar-brand">
         <img
-          className="brand-mark"
-          src={`${import.meta.env.BASE_URL}logo-idugel.svg`}
-          alt="Grupo Idugel"
+          className="brand-seal"
+          src={`${import.meta.env.BASE_URL}selo-30-anos.png`}
+          alt="Grupo Idugel — 30 anos"
         />
-        <span className="brand-name">
-          <em>Grupo</em>
-          Idugel
-        </span>
         <span className="brand-divider" />
         <span className="brand-app">Configurador de produto</span>
       </div>

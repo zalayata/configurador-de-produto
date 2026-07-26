@@ -124,32 +124,13 @@ button {
   gap: 12px;
 }
 
-.brand-mark {
-  width: 34px;
-  height: 34px;
+.brand-seal {
+  height: 44px;
   display: block;
-  filter: drop-shadow(0 2px 8px rgba(211, 38, 44, 0.35));
+  /* selo oficial em vinho — realce leve para leitura sobre fundo escuro */
+  filter: brightness(1.55) saturate(1.15) drop-shadow(0 2px 10px rgba(0, 0, 0, 0.5));
 }
 
-.brand-name {
-  display: flex;
-  flex-direction: column;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 19px;
-  line-height: 1;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.brand-name em {
-  font-style: normal;
-  font-weight: 600;
-  font-size: 9px;
-  letter-spacing: 0.42em;
-  color: var(--accent-hi);
-  margin-bottom: 3px;
-}
 
 .brand-divider {
   width: 1px;
@@ -1131,13 +1112,15 @@ button {
     letter-spacing: 0.04em;
   }
 
-  .print-brand img {
-    width: 40px;
-    height: 40px;
+  .print-selo {
+    height: 52px;
   }
 
-  .print-brand strong {
+  .print-doc-type {
+    font-size: 13px;
+    font-weight: 600;
     color: #8b1a1a;
+    letter-spacing: 0.06em;
   }
 
   .print-tagline {
