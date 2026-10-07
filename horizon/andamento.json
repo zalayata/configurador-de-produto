@@ -1,0 +1,36 @@
+{
+  "atualizadoEm": "2026-10-07",
+  "projeto": {
+    "equipamento": "Dosador Horizon",
+    "ordem": "",
+    "proposta": "",
+    "quantidade": 1,
+    "cliente": "",
+    "cidade": "",
+    "confirmadoEm": "2026-10-05",
+    "entregaLimite": "2027-01-29"
+  },
+  "etapas": [
+    { "id": "pedido",      "nome": "Confirmação do pedido",            "inicio": "2026-10-05", "fim": "2026-10-05",
+      "rotulos": { "inicio": "Confirmado em", "fim": "Confirmado em" } },
+    { "id": "engenharia",  "nome": "Engenharia e detalhamento",        "inicio": "2026-10-05", "fim": "2026-10-16",
+      "rotulos": { "inicio": "Início", "fim": "Liberação para produção" } },
+    { "id": "suprimentos", "nome": "Suprimentos",                      "inicio": "2026-10-16", "fim": "2026-11-06",
+      "rotulos": { "inicio": "Início", "fim": "Materiais na fábrica" } },
+    { "id": "fabricacao",  "nome": "Fabricação",                       "inicio": "2026-11-06", "fim": "2026-12-04", "local": "Fábrica Idugel · Joaçaba (SC)",
+      "rotulos": { "inicio": "Início", "fim": "Conjuntos prontos" } },
+    { "id": "pintura",     "nome": "Pintura e acabamento",             "inicio": "2026-12-04", "fim": "2026-12-11",
+      "rotulos": { "inicio": "Início", "fim": "Acabamento concluído" } },
+    { "id": "montagem",    "nome": "Montagem mecânica e elétrica",     "inicio": "2026-12-11", "fim": "2027-01-08",
+      "rotulos": { "inicio": "Início", "fim": "Montagem concluída" } },
+    { "id": "testes",      "nome": "Testes e inspeção final",          "inicio": "2027-01-08", "fim": "2027-01-15",
+      "rotulos": { "inicio": "Início", "fim": "Liberado para expedição" } },
+    { "id": "expedicao",   "nome": "Expedição e entrega",              "inicio": "2027-01-15", "fim": "2027-01-29",
+      "rotulos": { "inicio": "Liberado para expedição", "fim": "Entrega — data-limite" } }
+  ],
+  "ajustes": {},
+  "fotos": [],
+  "atualizacoes": [
+    { "data": "2026-10-05", "etapa": "pedido", "texto": "Pedido confirmado. Produção do Dosador Horizon programada." }
+  ]
+}
