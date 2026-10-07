@@ -1,0 +1,29 @@
+/* Ficha de configuração — A4 retrato, no padrão do hotsite Chromium: fio de cabeçalho, logotipo com
+   42 mm, texto grafite sobre branco. Injetada com media="print" (ou "all" com ?impressao=1). */
+@page { size: A4 portrait; margin: 14mm; }
+
+html, body { background: #fff !important; color: #14191C !important; overflow: visible !important; height: auto !important; }
+body > *:not(#folha-impressao) { display: none !important; }
+#folha-impressao {
+  display: block !important; position: static; color: #14191C; background: #fff;
+  font-family: "Chromium Text", system-ui, sans-serif; font-size: 9.5pt; line-height: 1.45;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+html.simula-impressao #folha-impressao { width: 182mm; margin: 0 auto; padding: 14mm 0; }
+#folha-impressao strong { color: #14191C; }
+.imp-fio { height: 1px; background: #14191C; margin-bottom: 4mm; }
+.imp-cabecalho { display: flex; gap: 8mm; align-items: flex-start; padding-bottom: 3mm; font-size: 8.5pt; color: #4B565C; }
+.imp-cabecalho img { width: 42mm; height: auto; }
+.imp-cabecalho p { margin: 0; }
+.imp-titulo { font-family: "Chromium Display", "Arial Narrow", sans-serif; font-size: 20pt; line-height: 1; text-transform: uppercase; color: #14191C; margin-bottom: 1.5mm !important; }
+.imp-figura { margin: 1.5mm 0 3mm; padding: 3mm; background: #1B2329; display: grid; justify-items: center; gap: 1.5mm; break-inside: avoid; }
+.imp-figura img { width: auto; height: 80mm; max-width: 100%; object-fit: contain; }
+.imp-figura figcaption { font-size: 7pt; letter-spacing: .12em; text-transform: uppercase; color: #C9D3DA; }
+#folha-impressao h2 { font-family: "Chromium Display", "Arial Narrow", sans-serif; font-size: 13pt; text-transform: uppercase; letter-spacing: .01em; line-height: 1; margin: 5mm 0 2mm; color: #14191C; }
+#folha-impressao .tabela { width: 100%; border-collapse: collapse; font-size: 8.5pt; }
+#folha-impressao .tabela td { padding: 1.2mm 2mm; border-bottom: 1px solid #D8D4C9; vertical-align: top; }
+#folha-impressao .tabela td:first-child { width: 42%; color: #4B565C; }
+#folha-impressao .tabela tr { break-inside: avoid; }
+#folha-impressao .tabela tr:nth-child(even) td { background: #F4F2EC; }
+.imp-rodape { margin-top: 6mm; padding-top: 3mm; border-top: 1px solid #14191C; font-size: 7.5pt; color: #4B565C; display: grid; gap: 1mm; line-height: 1.4; }
+.imp-rodape p { margin: 0; }

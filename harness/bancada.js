@@ -57,9 +57,10 @@ scene.add(grade)
 scene.add(new THREE.AxesHelper(0.5))
 
 const base = import.meta.env.BASE_URL || './'
+// o manifesto vive em src/catalog/modelos (fonte do catálogo); a bancada roda só no servidor de desenvolvimento
 const [gltf, manifesto] = await Promise.all([
   new GLTFLoader().loadAsync(`${base}models/${modeloId}.glb`),
-  fetch(`${base}models/${modeloId}.json`).then((r) => r.json()),
+  import(/* @vite-ignore */ `/src/catalog/modelos/${modeloId}.json`).then((m) => m.default),
 ])
 const raiz = gltf.scene
 scene.add(raiz)

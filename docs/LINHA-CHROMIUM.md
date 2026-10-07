@@ -46,7 +46,7 @@ O pacote de referência contém dados comerciais de um cliente e não é copiado
 
 ## 4. Plano em etapas
 
-### Etapa A — Identidade visual (sem mexer em 3D)
+### Etapa A — Identidade visual (feita em 07/10/2026, junto com a migração para JavaScript puro)
 
 1. Trazer os tokens de `DIRECAO-DE-ARTE.md` §2.2 para `src/styles/global.css`: `--tinta-*`, `--grafite-*`, `--cromo-*`, `--aco`, `--papel`, escalas tipográficas e durações.
 2. Fontes locais Barlow Condensed e Manrope em `public/fonts/` (OFL), `font-synthesis: none`; remover `@fontsource/*`.
@@ -56,7 +56,14 @@ O pacote de referência contém dados comerciais de um cliente e não é copiado
 6. Títulos de etapa em Barlow Condensed caixa alta, com o título grande passando atrás do objeto (sanduíche C2/C3/C5).
 7. Teste de disciplina cromática (varredura do CSS gerado) como no hotsite.
 
-### Etapa B — Palco e visualizador
+### Etapa B — Palco e visualizador (feita em 07/10/2026)
+
+O configurador passou a usar o próprio `InstallationViewer` do hotsite (`src/viewer.js` e `src/viewer/`), sem React,
+com as extensões descritas em `docs/VISUALIZADOR.md`: aparência por grupo com transição, foco de câmera em um
+conjunto, visibilidade por grupo, realce programático e informações de exportação. Palco com gradiente por etapa,
+farinha em duas camadas de canvas, grão e vinheta (`src/page/atmos.js`, portado).
+
+Plano original:
 
 1. Trocar o piso espelhado por laje/palco com transparência radial, névoa de cor igual ao centro do gradiente, farinha em duas camadas de canvas 2D e grão de filme.
 2. Luz do hotsite: softbox quente, recorte fria, hemisférica, `RoomEnvironment`, ACES.
@@ -84,7 +91,7 @@ O pacote de referência contém dados comerciais de um cliente e não é copiado
 
 ## 5. Decisões em aberto
 
-1. **Stack.** Manter React + TypeScript e portar a linha visual e as capacidades do visualizador, ou migrar para JavaScript ES modules + Three.js puro e reaproveitar `viewer.js`, `machine-model.js` e os módulos de modelo do hotsite sem adaptação. A segunda opção reduz o custo das etapas B e C e mantém um único código de visualizador entre hotsite e configurador.
+1. **Stack.** Decidido em 07/10/2026: JavaScript ES modules + Three.js puro, reaproveitando o visualizador do hotsite. React, TypeScript, react-three-fiber e Zustand saíram do projeto; o moinho de martelos demonstrativo (procedural, em React) foi aposentado porque o catálogo já tem produtos reais.
 2. **Primeiro produto.** Decidido em 07/10/2026: sopradores IduFlow HG80 e HG125V; o banco de cilindros entra quando o STEP for enviado.
-3. **Importação CAD no navegador.** Manter como recurso do produto final ou mover para ferramenta interna de preparação de catálogo.
+3. **Importação CAD no navegador.** Mantida no produto (botão "Importar CAD" e arrastar e soltar): cada peça do arquivo vira um grupo do visualizador, com cor e visibilidade próprias. A publicação no catálogo continua passando pelo conversor offline.
 4. **Escopo das cores.** No configurador, verde/vermelho continuam reservados a escopo de fornecimento (incluso / não incluso), ou o configurador não usa esse eixo e as duas cores simplesmente saem da interface.
