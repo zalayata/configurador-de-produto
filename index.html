@@ -1,19 +1,163 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-etapa="produto" data-carregando="1">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="description" content="Configurador 3D de produtos Idugel — personalize equipamentos, acabamentos e opcionais em tempo real." />
-    <meta name="theme-color" content="#0b0e11" />
-    <link rel="icon" type="image/svg+xml" href="./logo-idugel.svg" />
+    <meta name="description" content="Configurador 3D de produtos do Grupo Idugel: escolha o equipamento, defina acabamentos e compartilhe a configuração." />
+    <meta name="theme-color" content="#05090C" />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="./fonts/display.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="./fonts/text.woff2" as="font" type="font/woff2" crossorigin />
     <title>Configurador Idugel — Equipamentos sob medida em 3D</title>
-    <style>
-      html, body { background: #0b0e11; }
-    </style>
-    <script type="module" crossorigin src="./assets/index-CRgCHO6-.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-w0ixjaWl.css">
+    <script type="module" crossorigin src="./assets/index-Kxc887DX.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-uOtSPpYa.css">
   </head>
   <body>
-    <div id="root"></div>
+    <a class="pular" href="#painel">Pular para o painel de configuração</a>
+
+    <!-- Carregador: percentual real (fontes, módulos do 3D, modelo, primeiro quadro) -->
+    <div id="carregador" role="status" aria-live="polite" aria-label="Carregando o configurador">
+      <span class="plaqueta car-plaqueta" aria-hidden="true"><img src="./media/idugel-30-anos.png" alt="" width="132" height="34" /></span>
+      <div class="car-centro">
+        <p class="car-numero" aria-hidden="true"><span id="car-pct">000</span></p>
+        <div class="car-fio" aria-hidden="true"><span id="car-barra"></span></div>
+        <p class="sobre car-etapa" id="car-etapa">Carregando fontes</p>
+      </div>
+      <p class="car-rodape sobre">Configurador de produto · Grupo Idugel</p>
+    </div>
+
+    <!-- Palco: camadas fixas atrás da interface -->
+    <div id="palco">
+      <div class="palco-fundo" aria-hidden="true"></div>
+      <canvas id="atmos-tras" aria-hidden="true"></canvas>
+      <div id="titulos-tras" aria-hidden="true">
+        <p class="tras tras--linha"><span class="tras-texto"></span></p>
+        <p class="tras tras--modelo"><span class="tras-texto"></span></p>
+      </div>
+      <div id="palco-3d"></div>
+      <canvas id="atmos-frente" aria-hidden="true"></canvas>
+      <div class="palco-grao" aria-hidden="true"></div>
+      <div class="palco-vinheta" aria-hidden="true"></div>
+    </div>
+
+    <header id="cabecalho">
+      <a class="plaqueta" href="./" aria-label="Grupo Idugel — início">
+        <img src="./media/idugel-30-anos.png" alt="Grupo Idugel — 30 anos" width="132" height="34" />
+      </a>
+      <p class="sobre cab-titulo">Configurador de produto</p>
+      <div class="cab-direita">
+        <button type="button" class="pilula pilula--fina" id="botao-importar" data-acao="importar">
+          <svg class="icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0-4 4m4-4 4 4M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3" /></svg>
+          <span>Importar CAD</span>
+        </button>
+        <a class="pilula pilula--fina cab-site" href="https://www.idugel.com.br" target="_blank" rel="noreferrer">idugel.com.br</a>
+      </div>
+    </header>
+
+    <nav id="indicadores" aria-label="Etapas da configuração"></nav>
+
+    <!-- Título/claquete da etapa sobre o palco -->
+    <section id="cena" aria-live="polite">
+      <p class="claquete"><span class="claquete-num" id="claquete-num">01 / 03</span><span class="claquete-fio"></span><span id="claquete-nome">Produto</span></p>
+      <h1 class="cena-titulo" id="cena-titulo"><span class="tt" id="cena-titulo-texto">IduFlow</span></h1>
+      <p class="lead" id="cena-lead"></p>
+    </section>
+
+    <!-- Painel de configuração (vidro) -->
+    <aside id="painel" aria-label="Painel de configuração" tabindex="-1">
+      <header class="painel-cabecalho">
+        <p class="sobre" id="painel-sobre">Etapa 1 de 3</p>
+        <h2 class="painel-titulo" id="painel-titulo">Produto</h2>
+        <p class="painel-dica" id="painel-dica"></p>
+      </header>
+      <div class="painel-rolagem" id="painel-conteudo"></div>
+      <footer class="painel-rodape">
+        <button type="button" class="pilula pilula--fina" id="botao-voltar" data-acao="voltar">Voltar</button>
+        <button type="button" class="pilula pilula--fina pilula--acao" id="botao-avancar" data-acao="avancar">Avançar</button>
+      </footer>
+    </aside>
+
+    <!-- Ferramentas do modelo (Explorar) -->
+    <div id="ferramentas">
+      <button type="button" class="circulo circulo--mini" data-acao="explorar" aria-expanded="false" aria-controls="explorar" aria-label="Explorar o modelo: vistas, corte, explodida e etiquetas" title="Explorar">
+        <svg class="icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 7.5v9L12 21l8-4.5v-9L12 3zM4 7.5l8 4.5 8-4.5M12 12v9" /></svg>
+      </button>
+      <button type="button" class="circulo circulo--mini" data-acao="giro" aria-pressed="true" aria-label="Giro automático" title="Giro automático">
+        <svg class="icone" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.4" /><path d="M19.4 7.3c1.6 1 2.6 2.2 2.6 3.4 0 2.9-4.5 5.3-10 5.3S2 13.6 2 10.7c0-1.2 1-2.4 2.6-3.4" /></svg>
+      </button>
+      <button type="button" class="circulo circulo--mini" data-acao="etiquetas" aria-pressed="false" aria-label="Etiquetas das peças" title="Etiquetas">
+        <svg class="icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10h9l4 4-4 4H4zM13 10V4h7v6" /></svg>
+      </button>
+      <button type="button" class="circulo circulo--mini" data-acao="reenquadrar" aria-label="Reenquadrar a câmera" title="Reenquadrar">
+        <svg class="icone" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6" /><path d="M12 2v5M12 17v5M2 12h5M17 12h5" /></svg>
+      </button>
+      <div id="explorar" class="explorar" hidden>
+        <section class="ex-secao">
+          <p class="sobre">Vistas</p>
+          <div class="ex-vistas" role="radiogroup" aria-label="Vistas">
+            <button type="button" class="ex-vista" data-vista="produto" role="radio" aria-checked="true">Produto</button>
+            <button type="button" class="ex-vista" data-vista="iso" role="radio" aria-checked="false">Iso</button>
+            <button type="button" class="ex-vista" data-vista="frente" role="radio" aria-checked="false">Frente</button>
+            <button type="button" class="ex-vista" data-vista="lateral" role="radio" aria-checked="false">Lateral</button>
+            <button type="button" class="ex-vista" data-vista="tras" role="radio" aria-checked="false">Trás</button>
+            <button type="button" class="ex-vista" data-vista="topo" role="radio" aria-checked="false">Topo</button>
+          </div>
+        </section>
+        <section class="ex-secao">
+          <p class="sobre">Corte <output id="corte-leitura" class="corte-leitura"></output></p>
+          <div class="ex-linha" role="radiogroup" aria-label="Eixo do corte">
+            <button type="button" class="circulo circulo--mini" data-corte="x" role="radio" aria-checked="false">X</button>
+            <button type="button" class="circulo circulo--mini" data-corte="y" role="radio" aria-checked="false">Y</button>
+            <button type="button" class="circulo circulo--mini" data-corte="z" role="radio" aria-checked="false">Z</button>
+            <button type="button" class="pilula pilula--fina" data-corte="nenhum" role="radio" aria-checked="true">Sem corte</button>
+            <button type="button" class="pilula pilula--fina" data-acao="inverter-corte" aria-pressed="false">Inverter</button>
+          </div>
+          <label class="deslizante"><span class="sr">Posição do corte</span><input type="range" id="corte-posicao" min="0" max="1" step="0.05" value="0.5" disabled /></label>
+        </section>
+        <section class="ex-secao">
+          <p class="sobre">Vista explodida <output id="explodida-leitura" class="corte-leitura">0%</output></p>
+          <label class="deslizante"><span class="sr">Fator da vista explodida</span><input type="range" id="explodida" min="0" max="1" step="0.05" value="0" /></label>
+        </section>
+        <section class="ex-secao ex-secao--acoes">
+          <button type="button" class="pilula pilula--fina" data-acao="restaurar-vista">Restaurar</button>
+        </section>
+      </div>
+    </div>
+
+    <div id="barra-base">
+      <div class="barra-acoes">
+        <button type="button" class="circulo circulo--mini" data-acao="png" aria-label="Baixar imagem (PNG) da vista atual" title="Baixar imagem">
+          <svg class="icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14" /></svg>
+        </button>
+        <button type="button" class="circulo circulo--mini" data-acao="link" aria-label="Copiar link desta configuração" title="Copiar link">
+          <svg class="icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3A4 4 0 0 0 11 18.7l1-1" /></svg>
+        </button>
+        <button type="button" class="circulo circulo--mini" data-acao="imprimir" aria-label="Imprimir ficha da configuração" title="Imprimir ficha">
+          <svg class="icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 9V4h10v5M7 17H4v-7h16v7h-3M7 14h10v6H7z" /></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Arrastar e soltar arquivos CAD -->
+    <div id="soltar" hidden aria-hidden="true">
+      <div class="soltar-caixa">
+        <p class="soltar-titulo">Solte o arquivo para importar</p>
+        <p class="sobre">GLB · STEP · IGES · STL · OBJ</p>
+      </div>
+    </div>
+    <input type="file" id="arquivo" accept=".glb,.gltf,.step,.stp,.iges,.igs,.brep,.brp,.stl,.obj" hidden />
+
+    <!-- Carregamento de modelo (troca de produto, importação) -->
+    <div id="carregando" role="status" hidden>
+      <span class="spinner" aria-hidden="true"></span>
+      <span id="carregando-texto">Carregando modelo…</span>
+    </div>
+
+    <p id="aviso" role="status" aria-live="polite"></p>
+
+    <!-- Ficha de impressão (só na impressão) -->
+    <div id="folha-impressao" aria-hidden="true"></div>
+
+    <noscript><div class="sem-script">O configurador precisa de JavaScript para funcionar.</div></noscript>
   </body>
 </html>
