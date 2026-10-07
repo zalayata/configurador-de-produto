@@ -1,13 +1,16 @@
 import { useRef } from 'react'
 import { DEMO_PRODUCT, PRODUCT_LINES } from '../../config/product'
+import { CATALOG } from '../../catalog/products'
 import { useConfigurator } from '../../state/store'
 import { useImportModel } from '../../hooks/useImportModel'
 
 export function ProdutoStep() {
   const source = useConfigurator((s) => s.source)
   const line = useConfigurator((s) => s.line)
+  const productId = useConfigurator((s) => s.productId)
   const setLine = useConfigurator((s) => s.setLine)
   const setSource = useConfigurator((s) => s.setSource)
+  const selectProduct = useConfigurator((s) => s.selectProduct)
   const imported = useConfigurator((s) => s.imported)
   const setImported = useConfigurator((s) => s.setImported)
   const importModel = useImportModel()
@@ -15,8 +18,31 @@ export function ProdutoStep() {
 
   return (
     <div className="step-body">
-      <div className="field-label">Modelo em exibição</div>
+      <div className="field-label">Catálogo · Linha IduFlow</div>
+      {CATALOG.map((product) => {
+        const selected = source === 'catalogo' && productId === product.id
+        const d = product.manifest.dimensoesMm
+        return (
+          <button
+            key={product.id}
+            type="button"
+            className={`product-card${selected ? ' is-selected' : ''}`}
+            onClick={() => selectProduct(product.id)}
+          >
+            <div className="product-card-head">
+              <span className="product-card-name">{product.name}</span>
+              <span className="tag">{product.code}</span>
+            </div>
+            <p className="product-card-desc">{product.description}</p>
+            <p className="product-card-meta">
+              {d.comprimento} × {d.altura} × {d.profundidade} mm · {product.manifest.grupos.length}{' '}
+              conjuntos · geometria do projeto
+            </p>
+          </button>
+        )
+      })}
 
+      <div className="field-label">Demonstração</div>
       <button
         type="button"
         className={`product-card${source === 'demo' ? ' is-selected' : ''}`}

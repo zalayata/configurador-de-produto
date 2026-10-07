@@ -1,10 +1,10 @@
-import { useConfigurator, DEMO_STEPS, IMPORT_STEPS } from '../state/store'
+import { useConfigurator, stepsFor } from '../state/store'
 
 export function StepRail() {
   const source = useConfigurator((s) => s.source)
   const step = useConfigurator((s) => s.step)
   const setStep = useConfigurator((s) => s.setStep)
-  const steps = source === 'demo' ? DEMO_STEPS : IMPORT_STEPS
+  const steps = stepsFor(source)
 
   return (
     <nav className="steprail" aria-label="Etapas da configuração">

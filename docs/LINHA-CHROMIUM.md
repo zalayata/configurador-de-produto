@@ -63,22 +63,28 @@ O pacote de referência contém dados comerciais de um cliente e não é copiado
 3. Portar para o configurador as capacidades do `InstallationViewer`: corte com tampa sólida, isolamento com fantasma, explodida, vistas nomeadas, poses em arco, etiquetas com linha-guia, PNG com logo e legenda, estado completo na URL.
 4. Decisão de arquitetura (ver §5): reaproveitar `src/viewer.js` do hotsite como classe independente do React (envolvida por um componente fino) ou reescrever as mesmas capacidades em react-three-fiber.
 
-### Etapa C — Produto real
+### Etapa C — Produtos reais (iniciada em 07/10/2026)
 
-1. Primeiro produto do catálogo: o próprio banco de cilindros Linha Chromium, reutilizando o modelo híbrido (GLB do acionamento + banco procedural) e seus testes de alinhamento.
-2. Módulo de dados único por produto (variantes: rolo 1000 / 1250 / sobreposto; acabamentos; opcionais) com testes.
-3. Mapear opcionais e acabamentos aos `groupId` do modelo, para que cada escolha acenda ou recolora um grupo.
-4. Ficha de impressão A4 no padrão do hotsite (fio de cabeçalho, logo 42 mm, duas colunas).
+1. **Feito:** sopradores IduFlow HG80 e HG125V convertidos do STEP para GLB com um grupo por conjunto e
+   `userData` por malha; manifestos com proveniência; catálogo em `src/catalog/`; etapas Produto →
+   Acabamento → Resumo; link compartilhável, resumo em texto e ficha de impressão (`docs/MODELOS-3D.md`).
+2. Banco de cilindros Linha Chromium quando o STEP chegar, reutilizando o método do hotsite (acionamento
+   do CAD + banco procedural, se necessário) e seus testes de alinhamento.
+3. Opcionais por produto mapeados aos `groupId` do modelo, para que cada escolha acenda ou recolora um grupo
+   (depende da lista comercial de opcionais de cada soprador).
+4. Correias procedurais entre as polias (os STEP trazem só as polias).
+5. Ficha de impressão A4 no padrão do hotsite (fio de cabeçalho, logo 42 mm, duas colunas).
 
 ### Etapa D — Catálogo
 
-1. Pipeline Inventor → STEP → GLB compacto com `userData` por peça (`tools/cad/`), nos moldes de `build-glb.py`.
-2. Seletor de produto na etapa Produto lendo o catálogo.
+1. **Feito:** pipeline STEP → GLB compacto com `userData` por peça (`tools/cad/converter-step.mjs`), bancada
+   de conferência (`harness/`) e captura (`tools/shot.mjs`).
+2. **Feito:** seletor de produto na etapa Produto lendo o catálogo.
 3. Leitura linear e `prefers-reduced-motion` com todo o conteúdo.
 
 ## 5. Decisões em aberto
 
 1. **Stack.** Manter React + TypeScript e portar a linha visual e as capacidades do visualizador, ou migrar para JavaScript ES modules + Three.js puro e reaproveitar `viewer.js`, `machine-model.js` e os módulos de modelo do hotsite sem adaptação. A segunda opção reduz o custo das etapas B e C e mantém um único código de visualizador entre hotsite e configurador.
-2. **Primeiro produto.** Começar pelo banco de cilindros Chromium (modelo já pronto e testado) ou por outro equipamento do portfólio.
+2. **Primeiro produto.** Decidido em 07/10/2026: sopradores IduFlow HG80 e HG125V; o banco de cilindros entra quando o STEP for enviado.
 3. **Importação CAD no navegador.** Manter como recurso do produto final ou mover para ferramenta interna de preparação de catálogo.
 4. **Escopo das cores.** No configurador, verde/vermelho continuam reservados a escopo de fornecimento (incluso / não incluso), ou o configurador não usa esse eixo e as duas cores simplesmente saem da interface.

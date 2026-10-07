@@ -20,6 +20,24 @@ Configurador 3D de equipamentos industriais no estilo do [configurador da Cirrus
 
 ![Etapa de opcionais com ciclone](docs/tela-opcionais.png)
 
+## Catálogo — linha IduFlow
+
+Os primeiros produtos reais do catálogo são os sopradores **IduFlow HG80** (11 kW, 2 polos) e
+**IduFlow HG125V** (30 kW, 4 polos). A geometria vem do projeto (montagens em STEP), convertida fora do
+navegador para GLB compacto com um grupo por conjunto — soprador, admissão, descarga, motor, base
+basculante, polias, proteção, base com silenciador integrado, amortecedores — e cada grupo recebe o
+acabamento escolhido na etapa correspondente. O processo completo está em
+[`docs/MODELOS-3D.md`](docs/MODELOS-3D.md).
+
+![Soprador IduFlow HG80 na etapa de acabamento](docs/tela-iduflow-hg80.png)
+
+```bash
+# converter um STEP novo (ver docs/MODELOS-3D.md)
+node tools/cad/converter-step.mjs --produto tools/cad/produtos/iduflow-hg80.json --step "<arquivo.STEP>"
+# bancada de conferência (com npm run dev ligado)
+# http://127.0.0.1:5173/harness/index.html?modelo=iduflow-hg80&vista=iso
+```
+
 ## Como importar do Autodesk Inventor ou Fusion
 
 O caminho recomendado é o **STEP**, formato universal que os dois programas exportam nativamente:
@@ -72,12 +90,15 @@ Quando quiser servir em domínio próprio (ex.: `configurador.idugel.com.br`), b
 | Dados institucionais, links, e-mail e WhatsApp | `src/config/branding.ts` |
 | Cor de destaque e tema | variáveis CSS em `src/styles/global.css` (`--accent`) |
 | Logomarca | `public/logo-idugel.svg` — substitua pelo vetor oficial quando disponível |
-| Acabamentos, grupos, opcionais e linhas | `src/config/product.ts` |
+| Acabamentos, grupos, opcionais e linhas do demo | `src/config/product.ts` |
+| Produtos do catálogo (nome, código, especificações, acabamento padrão por grupo) | `src/catalog/products.ts` |
+| Grupos e rótulos do modelo 3D de cada produto | `tools/cad/produtos/<id>.json` → `src/catalog/modelos/<id>.json` |
 | Produto demonstrativo 3D | `src/three/DemoModel.tsx` |
 
 ## Próximos passos sugeridos
 
-- Catálogo de produtos reais: exportar cada equipamento do Inventor como STEP, converter em GLB pelo próprio app e commitar em `public/models/`.
+- Mais produtos no catálogo: exportar cada equipamento como STEP e converter com `tools/cad/converter-step.mjs` (ver `docs/MODELOS-3D.md`).
+- Alinhar a identidade visual à linha do hotsite Chromium (`docs/LINHA-CHROMIUM.md`, etapa A).
 - Conversão de STEP em Web Worker para não pausar a interface em arquivos muito grandes.
 - Formulário de orçamento integrado (hoje o botão leva ao site da Idugel).
 - Preços/códigos por opcional, se a área comercial quiser expor.

@@ -1,10 +1,4 @@
-import type { GroupId } from '../config/product'
-
-interface SharedConfig {
-  f: Partial<Record<GroupId, string>>
-  o: string[]
-  l?: string
-}
+import { useConfigurator, type SharedConfig } from '../state/store'
 
 function toBase64Url(text: string): string {
   const bytes = new TextEncoder().encode(text)
@@ -23,42 +17,58 @@ function fromBase64Url(encoded: string): string {
   return new TextDecoder().decode(bytes)
 }
 
-export function encodeConfig(
-  finishes: Record<GroupId, string>,
-  options: Record<string, boolean>,
-  line: string,
-): string {
-  const payload: SharedConfig = {
-    f: finishes,
-    o: Object.entries(options)
-      .filter(([, enabled]) => enabled)
-      .map(([id]) => id),
-    l: line,
+/** Monta o estado compartilhável a partir do estado atual (demo ou catálogo). */
+export function currentSharedConfig(): SharedConfig | null {
+  const { source, finishes, options, line, productId, groupFinishes } = useConfigurator.getState()
+  if (source === 'catalogo' && productId) {
+    return { p: productId, g: groupFinishes }
   }
-  return toBase64Url(JSON.stringify(payload))
+  if (source === 'demo') {
+    return {
+      f: finishes,
+      o: Object.entries(options)
+        .filter(([, enabled]) => enabled)
+        .map(([id]) => id),
+      l: line,
+    }
+  }
+  return null
 }
+
+export function encodeConfig(config: SharedConfig): string {
+  return toBase64Url(JSON.stringify(config))
+}
+
+const isStringRecord = (value: unknown): value is Record<string, string> =>
+  typeof value === 'object' &&
+  value !== null &&
+  Object.values(value).every((v) => typeof v === 'string')
 
 export function decodeConfig(encoded: string): SharedConfig | null {
   try {
-    const parsed = JSON.parse(fromBase64Url(encoded)) as SharedConfig
+    const parsed = JSON.parse(fromBase64Url(encoded)) as Record<string, unknown>
     if (typeof parsed !== 'object' || parsed === null) return null
-    return {
-      f: typeof parsed.f === 'object' && parsed.f !== null ? parsed.f : {},
-      o: Array.isArray(parsed.o) ? parsed.o.filter((id) => typeof id === 'string') : [],
-      l: typeof parsed.l === 'string' ? parsed.l : undefined,
-    }
+    const config: SharedConfig = {}
+    if (isStringRecord(parsed.f)) config.f = parsed.f
+    if (Array.isArray(parsed.o)) config.o = parsed.o.filter((id) => typeof id === 'string')
+    if (typeof parsed.l === 'string') config.l = parsed.l
+    if (typeof parsed.p === 'string') config.p = parsed.p
+    if (isStringRecord(parsed.g)) config.g = parsed.g
+    return config
   } catch {
     return null
   }
 }
 
-export function shareUrl(
-  finishes: Record<GroupId, string>,
-  options: Record<string, boolean>,
-  line: string,
-): string {
+export function shareUrl(config: SharedConfig): string {
   const { origin, pathname } = window.location
-  return `${origin}${pathname}#c=${encodeConfig(finishes, options, line)}`
+  return `${origin}${pathname}#c=${encodeConfig(config)}`
+}
+
+/** Link da configuração atual, ou null quando a fonte não é compartilhável (modelo importado). */
+export function currentShareUrl(): string | null {
+  const config = currentSharedConfig()
+  return config ? shareUrl(config) : null
 }
 
 export function readSharedFromUrl(): SharedConfig | null {

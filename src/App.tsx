@@ -15,7 +15,7 @@ export default function App() {
   useEffect(() => {
     const shared = readSharedFromUrl()
     if (shared) {
-      applyShared(shared.f, shared.o, shared.l)
+      applyShared(shared)
       useConfigurator.getState().showToast('Configuração compartilhada carregada.')
     }
   }, [applyShared])

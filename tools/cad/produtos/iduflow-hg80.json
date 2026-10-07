@@ -1,0 +1,127 @@
+{
+  "id": "iduflow-hg80",
+  "nome": "Soprador IduFlow HG80",
+  "linha": "IduFlow",
+  "origem": {
+    "id": "cad-hg80",
+    "descricao": "Montagem HG80 2P-11KW (SolidWorks 2024), exportada em STEP AP203"
+  },
+  "rotacaoY": 0,
+  "grupos": [
+    {
+      "id": "soprador",
+      "rotulo": "Soprador com silenciador de admissão",
+      "descricao": "Cabeçote do soprador de lóbulos com o silenciador de admissão montado sobre ele (um só sólido no CAD).",
+      "cor": [
+        0.85,
+        0.86,
+        0.87
+      ],
+      "selecionar": [
+        {
+          "no": "机头"
+        }
+      ]
+    },
+    {
+      "id": "descarga",
+      "rotulo": "Flange de descarga",
+      "descricao": "Flange de saída do silenciador de descarga, na frente da base.",
+      "cor": [
+        0.5,
+        0.52,
+        0.55
+      ],
+      "selecionar": [
+        {
+          "indices": [
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": "motor",
+      "rotulo": "Motor elétrico 11 kW · 2 polos",
+      "descricao": "Motor elétrico trifásico, 11 kW, 2 polos, montagem B3.",
+      "cor": [
+        0.55,
+        0.6,
+        0.66
+      ],
+      "selecionar": [
+        {
+          "no": "11KW-2P"
+        }
+      ]
+    },
+    {
+      "id": "base-motor",
+      "rotulo": "Base basculante do motor",
+      "descricao": "Trilhos do motor articulados no eixo de basculamento, para o ajuste das correias.",
+      "cor": [
+        0.35,
+        0.37,
+        0.4
+      ],
+      "selecionar": [
+        {
+          "no": "电机座"
+        },
+        {
+          "indices": [
+            1,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "id": "transmissao",
+      "rotulo": "Polias da transmissão",
+      "descricao": "Polias de correias em V, perfil SPC.",
+      "cor": [
+        0.45,
+        0.47,
+        0.5
+      ],
+      "selecionar": [
+        {
+          "no": "SPC"
+        }
+      ]
+    },
+    {
+      "id": "base",
+      "rotulo": "Base com silenciador de descarga",
+      "descricao": "Base estrutural com silenciador de descarga integrado e proteção das correias (um só sólido no CAD).",
+      "cor": [
+        0.3,
+        0.33,
+        0.36
+      ],
+      "selecionar": [
+        {
+          "no": "底座"
+        }
+      ]
+    },
+    {
+      "id": "amortecedores",
+      "rotulo": "Amortecedores de vibração",
+      "descricao": "Seis amortecedores entre a base e o piso.",
+      "cor": [
+        0.12,
+        0.12,
+        0.13
+      ],
+      "metalico": 0.05,
+      "rugoso": 0.9,
+      "selecionar": [
+        {
+          "no": "减震器"
+        }
+      ]
+    }
+  ]
+}

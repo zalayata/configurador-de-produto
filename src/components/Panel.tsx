@@ -1,4 +1,4 @@
-import { useConfigurator, DEMO_STEPS, IMPORT_STEPS } from '../state/store'
+import { useConfigurator, stepsFor } from '../state/store'
 import { ProdutoStep } from './steps/ProdutoStep'
 import { AcabamentoStep } from './steps/AcabamentoStep'
 import { OpcionaisStep } from './steps/OpcionaisStep'
@@ -6,7 +6,7 @@ import { PecasStep } from './steps/PecasStep'
 import { ResumoStep } from './steps/ResumoStep'
 
 const HINTS: Record<string, string> = {
-  produto: 'Escolha o equipamento demonstrativo ou importe o seu modelo CAD.',
+  produto: 'Escolha um produto do catálogo, o equipamento demonstrativo ou importe o seu modelo CAD.',
   acabamento: 'Defina o acabamento de cada conjunto — a cena atualiza em tempo real.',
   opcionais: 'Ative os opcionais e veja cada item aparecer no equipamento.',
   pecas: 'Selecione uma peça para trocar a cor ou ocultá-la.',
@@ -19,7 +19,7 @@ export function Panel() {
   const next = useConfigurator((s) => s.next)
   const prev = useConfigurator((s) => s.prev)
 
-  const steps = source === 'demo' ? DEMO_STEPS : IMPORT_STEPS
+  const steps = stepsFor(source)
   const clamped = Math.min(step, steps.length - 1)
   const stepDef = steps[clamped]
 

@@ -6,6 +6,7 @@ import {
   PRODUCT_LINES,
   finishById,
 } from '../config/product'
+import { configurableGroups, productById } from '../catalog/products'
 import { branding } from '../config/branding'
 import { useConfigurator } from '../state/store'
 
@@ -21,6 +22,8 @@ export function PrintSheet() {
   const options = useConfigurator((s) => s.options)
   const imported = useConfigurator((s) => s.imported)
   const overrides = useConfigurator((s) => s.overrides)
+  const productId = useConfigurator((s) => s.productId)
+  const groupFinishes = useConfigurator((s) => s.groupFinishes)
 
   useEffect(() => {
     const onPrintRequest = (e: Event) => {
@@ -34,6 +37,7 @@ export function PrintSheet() {
     return () => window.removeEventListener('configurator:print', onPrintRequest)
   }, [])
 
+  const product = source === 'catalogo' ? productById(productId) : undefined
   const productLine = PRODUCT_LINES.find((l) => l.id === line)
   const enabledOptions = OPTIONS.filter((o) => options[o.id])
   const customParts = imported
@@ -43,6 +47,12 @@ export function PrintSheet() {
       })
     : []
   const today = new Date().toLocaleDateString('pt-BR')
+
+  const title = product
+    ? product.name
+    : source === 'demo'
+      ? DEMO_PRODUCT.name
+      : `Modelo importado — ${imported?.fileName ?? ''}`
 
   return (
     <div className="print-sheet">
@@ -63,14 +73,53 @@ export function PrintSheet() {
 
       {snapshot && <img className="print-snapshot" src={snapshot} alt="Visão do equipamento" />}
 
-      <h2 className="print-product">
-        {source === 'demo' ? DEMO_PRODUCT.name : `Modelo importado — ${imported?.fileName ?? ''}`}
-      </h2>
+      <h2 className="print-product">{title}</h2>
+      {product && <p className="print-line">Linha {product.line} · {product.code}</p>}
       {source === 'demo' && productLine && (
         <p className="print-line">Linha {productLine.label}</p>
       )}
 
-      {source === 'demo' ? (
+      {product && (
+        <>
+          <h3>Especificações</h3>
+          <table>
+            <tbody>
+              {product.specs.map((spec) => (
+                <tr key={spec.label}>
+                  <td>{spec.label}</td>
+                  <td>{spec.value}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <h3>Acabamentos</h3>
+          <table>
+            <tbody>
+              {configurableGroups(product).map((group) => (
+                <tr key={group.id}>
+                  <td>{group.rotulo}</td>
+                  <td>
+                    {finishById(groupFinishes[group.id] ?? product.groups[group.id].defaultFinish).label}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <h3>Conjuntos do modelo</h3>
+          <table>
+            <tbody>
+              {product.manifest.grupos.map((group) => (
+                <tr key={group.id}>
+                  <td>{group.rotulo}</td>
+                  <td>{group.descricao}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      )}
+
+      {source === 'demo' && (
         <>
           <h3>Acabamentos</h3>
           <table>
@@ -100,7 +149,9 @@ export function PrintSheet() {
             </tbody>
           </table>
         </>
-      ) : (
+      )}
+
+      {source === 'importado' && (
         <>
           <h3>Peças personalizadas</h3>
           <table>

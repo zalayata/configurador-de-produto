@@ -1,0 +1,196 @@
+{
+  "id": "iduflow-hg80",
+  "nome": "Soprador IduFlow HG80",
+  "linha": "IduFlow",
+  "arquivo": "iduflow-hg80.glb",
+  "unidade": "m",
+  "eixoVertical": "y",
+  "pisoEm": 0,
+  "dimensoesMm": {
+    "comprimento": 1378,
+    "altura": 1212,
+    "profundidade": 1160
+  },
+  "limites": {
+    "min": [
+      -0.689,
+      0,
+      -0.58
+    ],
+    "max": [
+      0.689,
+      1.212,
+      0.58
+    ]
+  },
+  "malhas": 24,
+  "triangulos": 15759,
+  "vertices": 19904,
+  "bytes": 594418,
+  "grupos": [
+    {
+      "id": "soprador",
+      "rotulo": "Soprador com silenciador de admissão",
+      "descricao": "Cabeçote do soprador de lóbulos com o silenciador de admissão montado sobre ele (um só sólido no CAD).",
+      "malhas": 1,
+      "triangulos": 342,
+      "min": [
+        -0.617,
+        0.612,
+        -0.484
+      ],
+      "max": [
+        0.029,
+        1.212,
+        -0.018
+      ],
+      "ancora": [
+        -0.294,
+        1.212,
+        -0.251
+      ]
+    },
+    {
+      "id": "descarga",
+      "rotulo": "Flange de descarga",
+      "descricao": "Flange de saída do silenciador de descarga, na frente da base.",
+      "malhas": 1,
+      "triangulos": 174,
+      "min": [
+        -0.482,
+        0.194,
+        0.414
+      ],
+      "max": [
+        -0.302,
+        0.35,
+        0.58
+      ],
+      "ancora": [
+        -0.392,
+        0.35,
+        0.497
+      ]
+    },
+    {
+      "id": "motor",
+      "rotulo": "Motor elétrico 11 kW · 2 polos",
+      "descricao": "Motor elétrico trifásico, 11 kW, 2 polos, montagem B3.",
+      "malhas": 9,
+      "triangulos": 12844,
+      "min": [
+        0.051,
+        0.348,
+        -0.474
+      ],
+      "max": [
+        0.405,
+        0.784,
+        0.147
+      ],
+      "ancora": [
+        0.228,
+        0.784,
+        -0.164
+      ]
+    },
+    {
+      "id": "base-motor",
+      "rotulo": "Base basculante do motor",
+      "descricao": "Trilhos do motor articulados no eixo de basculamento, para o ajuste das correias.",
+      "malhas": 4,
+      "triangulos": 116,
+      "min": [
+        -0.534,
+        0.246,
+        -0.502
+      ],
+      "max": [
+        0.689,
+        0.398,
+        0.307
+      ],
+      "ancora": [
+        0.077,
+        0.398,
+        -0.098
+      ]
+    },
+    {
+      "id": "transmissao",
+      "rotulo": "Polias da transmissão",
+      "descricao": "Polias de correias em V, perfil SPC.",
+      "malhas": 2,
+      "triangulos": 848,
+      "min": [
+        -0.602,
+        0.416,
+        -0.482
+      ],
+      "max": [
+        0.332,
+        0.841,
+        -0.398
+      ],
+      "ancora": [
+        -0.135,
+        0.841,
+        -0.44
+      ]
+    },
+    {
+      "id": "base",
+      "rotulo": "Base com silenciador de descarga",
+      "descricao": "Base estrutural com silenciador de descarga integrado e proteção das correias (um só sólido no CAD).",
+      "malhas": 1,
+      "triangulos": 763,
+      "min": [
+        -0.689,
+        0.052,
+        -0.575
+      ],
+      "max": [
+        0.661,
+        0.852,
+        0.414
+      ],
+      "ancora": [
+        -0.014,
+        0.852,
+        -0.081
+      ]
+    },
+    {
+      "id": "amortecedores",
+      "rotulo": "Amortecedores de vibração",
+      "descricao": "Seis amortecedores entre a base e o piso.",
+      "malhas": 6,
+      "triangulos": 672,
+      "min": [
+        -0.68,
+        0,
+        -0.58
+      ],
+      "max": [
+        0.652,
+        0.052,
+        0.29
+      ],
+      "ancora": [
+        -0.014,
+        0.052,
+        -0.145
+      ]
+    }
+  ],
+  "origem": {
+    "id": "cad-hg80",
+    "descricao": "Montagem HG80 2P-11KW (SolidWorks 2024), exportada em STEP AP203",
+    "arquivo": "428e12ed-HG80_2P-11KW.STEP",
+    "sha256": "7f2c106f7ebab580c6b5dbdffd55457c9095fd1ed7a5147dbe2c4460009050a9",
+    "bytes": 10860358
+  },
+  "glbSha256": "f9dfdd5727c86e099f9162fc9af5e8ceeb1d9ea23faefd574d9c2db80f38bb93",
+  "geradoEm": "2026-10-07",
+  "conversor": "tools/cad/converter-step.mjs (occt-import-js)"
+}

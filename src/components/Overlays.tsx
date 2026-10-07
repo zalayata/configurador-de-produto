@@ -55,16 +55,21 @@ export function DropOverlay() {
 export function LoadingOverlay() {
   const importing = useConfigurator((s) => s.importing)
   const importingFile = useConfigurator((s) => s.importingFile)
-  if (!importing) return null
+  const catalogLoading = useConfigurator((s) => s.catalogLoading)
+  if (!importing && !catalogLoading) return null
   return (
     <div className="loading-overlay" role="status">
       <div className="loading-box">
         <span className="spinner" aria-hidden="true" />
-        <span className="loading-title">Convertendo geometria CAD…</span>
-        {importingFile && <span className="loading-file">{importingFile}</span>}
-        <span className="loading-note">
-          Tudo acontece no seu navegador — nada é enviado a servidores.
+        <span className="loading-title">
+          {importing ? 'Convertendo geometria CAD…' : 'Carregando modelo do catálogo…'}
         </span>
+        {importing && importingFile && <span className="loading-file">{importingFile}</span>}
+        {importing && (
+          <span className="loading-note">
+            Tudo acontece no seu navegador — nada é enviado a servidores.
+          </span>
+        )}
       </div>
     </div>
   )

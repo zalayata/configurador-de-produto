@@ -8,9 +8,10 @@ import {
   MeshReflectorMaterial,
 } from '@react-three/drei'
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib'
-import { useConfigurator, DEMO_STEPS, IMPORT_STEPS } from '../state/store'
+import { useConfigurator, stepsFor } from '../state/store'
 import { DemoModel } from './DemoModel'
 import { ImportedModel } from './ImportedModel'
+import { CatalogModel } from './CatalogModel'
 import { viewerHandles } from '../utils/viewerHandles'
 
 const PRESETS: Record<string, { pos: [number, number, number]; tgt: [number, number, number] }> = {
@@ -21,23 +22,45 @@ const PRESETS: Record<string, { pos: [number, number, number]; tgt: [number, num
   resumo: { pos: [9.2, 4.6, 10.2], tgt: [0, 1.3, 0] },
 }
 
+/**
+ * Direções de câmera por etapa para produtos do catálogo (em metros reais).
+ * A distância é derivada do raio da caixa envolvente do modelo.
+ */
+const CATALOG_VIEWS: Record<string, { dir: [number, number, number]; k: number }> = {
+  produto: { dir: [1, 0.55, 1.15], k: 3.3 },
+  acabamento: { dir: [0.9, 0.42, 0.75], k: 3.0 },
+  resumo: { dir: [1.15, 0.7, 1.25], k: 3.6 },
+}
+
 function CameraRig() {
   const source = useConfigurator((s) => s.source)
   const step = useConfigurator((s) => s.step)
   const cameraNonce = useConfigurator((s) => s.cameraNonce)
+  const catalogBox = useConfigurator((s) => s.catalogBox)
   const camera = useThree((s) => s.camera)
   const controls = useThree((s) => s.controls) as OrbitControlsImpl | null
   const anim = useRef<{ pos: THREE.Vector3; tgt: THREE.Vector3 } | null>(null)
 
   useEffect(() => {
-    const steps = source === 'demo' ? DEMO_STEPS : IMPORT_STEPS
+    const steps = stepsFor(source)
     const stepId = steps[Math.min(step, steps.length - 1)].id
+    if (source === 'catalogo') {
+      if (!catalogBox) return
+      const view = CATALOG_VIEWS[stepId] ?? CATALOG_VIEWS.produto
+      const center = new THREE.Vector3(...catalogBox.center)
+      const dir = new THREE.Vector3(...view.dir).normalize()
+      anim.current = {
+        pos: center.clone().addScaledVector(dir, Math.max(1.2, catalogBox.radius * view.k)),
+        tgt: center,
+      }
+      return
+    }
     const preset = PRESETS[stepId] ?? PRESETS.produto
     anim.current = {
       pos: new THREE.Vector3(...preset.pos),
       tgt: new THREE.Vector3(...preset.tgt),
     }
-  }, [source, step, cameraNonce])
+  }, [source, step, cameraNonce, catalogBox])
 
   useEffect(() => {
     if (!controls) return
@@ -156,6 +179,10 @@ function StageLights() {
 }
 
 function Floor() {
+  const source = useConfigurator((s) => s.source)
+  const catalogBox = useConfigurator((s) => s.catalogBox)
+  // anel de palco: fixo para o demo, proporcional ao produto do catálogo
+  const ring = source === 'catalogo' && catalogBox ? Math.max(1.3, catalogBox.radius * 1.55) : 4.6
   return (
     <>
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
@@ -176,11 +203,11 @@ function Floor() {
       </mesh>
       {/* anel de palco */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.012, 0]}>
-        <ringGeometry args={[4.55, 4.62, 128]} />
+        <ringGeometry args={[ring - 0.05, ring + 0.02, 128]} />
         <meshBasicMaterial color="#d3262c" transparent opacity={0.45} />
       </mesh>
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.011, 0]}>
-        <ringGeometry args={[4.62, 5.0, 128]} />
+        <ringGeometry args={[ring + 0.02, ring + 0.4, 128]} />
         <meshBasicMaterial color="#d3262c" transparent opacity={0.05} />
       </mesh>
     </>
@@ -221,12 +248,14 @@ export function Viewer() {
       <fog attach="fog" args={['#0b0e11', 20, 46]} />
       <StageLights />
       <Floor />
-      {source === 'demo' ? <DemoModel /> : <ImportedModel />}
+      {source === 'demo' && <DemoModel />}
+      {source === 'importado' && <ImportedModel />}
+      {source === 'catalogo' && <CatalogModel />}
       <OrbitControls
         makeDefault
         enableDamping
         dampingFactor={0.08}
-        minDistance={2.5}
+        minDistance={0.8}
         maxDistance={26}
         maxPolarAngle={Math.PI / 2 - 0.04}
         target={[0, 1.2, 0]}

@@ -5,17 +5,36 @@ import {
   PRODUCT_LINES,
   finishById,
 } from '../../config/product'
+import { configurableGroups, productById } from '../../catalog/products'
 import { branding } from '../../config/branding'
 import { useConfigurator } from '../../state/store'
-import { shareUrl } from '../../utils/share'
+import { currentShareUrl } from '../../utils/share'
 import { captureSnapshot, downloadSnapshot } from '../../utils/viewerHandles'
 import { exportGlb } from '../../utils/exportGlb'
 
 export function buildSummaryText(): string {
-  const { source, line, finishes, options, imported, overrides } = useConfigurator.getState()
+  const { source, line, finishes, options, imported, overrides, productId, groupFinishes } =
+    useConfigurator.getState()
   const lines: string[] = []
   lines.push(`Configuração — ${branding.companyName}`)
-  if (source === 'demo') {
+  const product = source === 'catalogo' ? productById(productId) : undefined
+  if (product) {
+    lines.push(`Produto: ${product.name} (${product.code}) · Linha ${product.line}`)
+    lines.push('')
+    lines.push('Especificações:')
+    for (const spec of product.specs) lines.push(`  • ${spec.label}: ${spec.value}`)
+    lines.push('')
+    lines.push('Acabamentos:')
+    for (const group of configurableGroups(product)) {
+      const finishId = groupFinishes[group.id] ?? product.groups[group.id].defaultFinish
+      lines.push(`  • ${group.rotulo}: ${finishById(finishId).label}`)
+    }
+    const url = currentShareUrl()
+    if (url) {
+      lines.push('')
+      lines.push(`Link da configuração: ${url}`)
+    }
+  } else if (source === 'demo') {
     const productLine = PRODUCT_LINES.find((l) => l.id === line)
     lines.push(`Produto: ${DEMO_PRODUCT.name} (${DEMO_PRODUCT.code})`)
     if (productLine) lines.push(`Linha: ${productLine.label}`)
@@ -31,8 +50,11 @@ export function buildSummaryText(): string {
     for (const option of enabled) {
       lines.push(`  • [${option.code}] ${option.label}`)
     }
-    lines.push('')
-    lines.push(`Link da configuração: ${shareUrl(finishes, options, line)}`)
+    const url = currentShareUrl()
+    if (url) {
+      lines.push('')
+      lines.push(`Link da configuração: ${url}`)
+    }
   } else if (imported) {
     lines.push(`Produto: modelo importado — ${imported.fileName}`)
     lines.push(`Peças: ${imported.parts.length}`)
@@ -62,8 +84,11 @@ export function ResumoStep() {
   const options = useConfigurator((s) => s.options)
   const imported = useConfigurator((s) => s.imported)
   const overrides = useConfigurator((s) => s.overrides)
+  const productId = useConfigurator((s) => s.productId)
+  const groupFinishes = useConfigurator((s) => s.groupFinishes)
   const showToast = useConfigurator((s) => s.showToast)
 
+  const product = source === 'catalogo' ? productById(productId) : undefined
   const productLine = PRODUCT_LINES.find((l) => l.id === line)
   const enabledOptions = OPTIONS.filter((o) => options[o.id])
   const customized = imported
@@ -88,16 +113,31 @@ export function ResumoStep() {
     )
   }
 
+  const productName = product
+    ? product.name
+    : source === 'demo'
+      ? DEMO_PRODUCT.name
+      : (imported?.fileName ?? '—')
+  const productTag = product
+    ? product.code
+    : source === 'demo'
+      ? DEMO_PRODUCT.code
+      : `${imported?.parts.length ?? 0} peças`
+
   return (
     <div className="step-body">
       <section className="summary-block">
         <div className="field-label">Produto</div>
         <div className="summary-row">
-          <span>{source === 'demo' ? DEMO_PRODUCT.name : (imported?.fileName ?? '—')}</span>
-          <span className="tag">
-            {source === 'demo' ? DEMO_PRODUCT.code : `${imported?.parts.length ?? 0} peças`}
-          </span>
+          <span>{productName}</span>
+          <span className="tag">{productTag}</span>
         </div>
+        {product && (
+          <div className="summary-row">
+            <span>Linha</span>
+            <span className="summary-value">{product.line}</span>
+          </div>
+        )}
         {source === 'demo' && productLine && (
           <div className="summary-row">
             <span>Linha</span>
@@ -106,7 +146,38 @@ export function ResumoStep() {
         )}
       </section>
 
-      {source === 'demo' ? (
+      {product && (
+        <>
+          <section className="summary-block">
+            <div className="field-label">Especificações</div>
+            {product.specs.map((spec) => (
+              <div key={spec.label} className="summary-row">
+                <span>{spec.label}</span>
+                <span className="summary-value">{spec.value}</span>
+              </div>
+            ))}
+          </section>
+          <section className="summary-block">
+            <div className="field-label">Acabamentos</div>
+            {configurableGroups(product).map((group) => {
+              const finish = finishById(
+                groupFinishes[group.id] ?? product.groups[group.id].defaultFinish,
+              )
+              return (
+                <div key={group.id} className="summary-row">
+                  <span>{group.rotulo}</span>
+                  <span className="summary-value">
+                    <span className="part-dot" style={{ background: finish.swatch }} />
+                    {finish.label}
+                  </span>
+                </div>
+              )
+            })}
+          </section>
+        </>
+      )}
+
+      {source === 'demo' && (
         <>
           <section className="summary-block">
             <div className="field-label">Acabamentos</div>
@@ -138,7 +209,9 @@ export function ResumoStep() {
             ))}
           </section>
         </>
-      ) : (
+      )}
+
+      {source === 'importado' && (
         <section className="summary-block">
           <div className="field-label">Personalizações</div>
           <div className="summary-row">
@@ -157,11 +230,14 @@ export function ResumoStep() {
         >
           Solicitar orçamento
         </a>
-        {source === 'demo' && (
+        {source !== 'importado' && (
           <button
             type="button"
             className="btn btn-outline"
-            onClick={() => void copy(shareUrl(finishes, options, line), 'Link copiado!')}
+            onClick={() => {
+              const url = currentShareUrl()
+              if (url) void copy(url, 'Link copiado!')
+            }}
           >
             Copiar link da configuração
           </button>
