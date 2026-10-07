@@ -1,0 +1,215 @@
+/* Visualizador 3D — estilos do palco, etiquetas e dica.
+   O fundo é transparente: o cenário é responsabilidade da página.
+   Personalização por variáveis CSS no contêiner (.vw). */
+
+.vw {
+  --vw-incluso: #0b8a43;
+  --vw-nao-incluso: #c8201e;
+  --vw-existente: #8c9296;
+  --vw-neutro: #4d5a5e;
+  --vw-papel: rgba(255, 255, 255, 0.94);
+  --vw-tinta: #18201f;
+  --vw-tinta-suave: rgba(24, 32, 31, 0.62);
+  --vw-sombra: 0 6px 22px rgba(12, 24, 24, 0.16), 0 1px 3px rgba(12, 24, 24, 0.14);
+  --vw-raio: 9px;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.vw__tela {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  outline: none;
+}
+
+.vw--interativo .vw__tela { cursor: grab; }
+.vw--interativo.vw--arrastando .vw__tela { cursor: grabbing !important; }
+
+.vw-somente-leitor {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ------------------------------------------------------------------ etiquetas */
+.vw-etiquetas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.vw-etiquetas__linhas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.vw-etiquetas__lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.vw-etiqueta {
+  --vw-cor: var(--vw-neutro);
+  position: absolute;
+  left: 0;
+  top: 0;
+  max-width: min(230px, 46vw);
+  will-change: transform;
+  transition: opacity 0.35s ease;
+  transition-delay: calc(var(--vw-ordem, 0) * 45ms);
+}
+
+.vw-etiqueta--incluso { --vw-cor: var(--vw-incluso); }
+.vw-etiqueta--nao-incluso { --vw-cor: var(--vw-nao-incluso); }
+.vw-etiqueta--existente { --vw-cor: var(--vw-existente); }
+
+.vw-etiqueta.is-oculta {
+  opacity: 0;
+  transition-delay: 0s;
+}
+.vw-etiqueta.is-oculta .vw-etiqueta__corpo { pointer-events: none; }
+
+.vw-etiqueta__corpo {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px 7px 10px;
+  border-radius: var(--vw-raio);
+  border: 1px solid color-mix(in srgb, var(--vw-cor) 55%, transparent);
+  border-left: 4px solid var(--vw-cor);
+  background: var(--vw-papel);
+  color: var(--vw-tinta);
+  font: 600 13px/1.25 inherit;
+  font-family: inherit;
+  letter-spacing: 0.005em;
+  box-shadow: var(--vw-sombra);
+  -webkit-backdrop-filter: blur(8px) saturate(1.2);
+  backdrop-filter: blur(8px) saturate(1.2);
+  pointer-events: auto;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.vw-etiqueta__corpo:hover { transform: translateY(-1px); box-shadow: 0 10px 28px rgba(12, 24, 24, 0.22), 0 1px 3px rgba(12, 24, 24, 0.16); }
+.vw-etiqueta__corpo:focus-visible { outline: 2px solid var(--vw-cor); outline-offset: 2px; }
+
+.vw-etiqueta__marca {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--vw-cor);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--vw-cor) 22%, transparent);
+}
+
+.vw-etiqueta__texto { text-wrap: balance; }
+
+.vw-guia { --vw-cor: var(--vw-neutro); transition: opacity 0.35s ease; }
+.vw-guia--incluso { --vw-cor: var(--vw-incluso); }
+.vw-guia--nao-incluso { --vw-cor: var(--vw-nao-incluso); }
+.vw-guia--existente { --vw-cor: var(--vw-existente); }
+.vw-guia.is-oculta { opacity: 0; }
+
+.vw-guia polyline {
+  fill: none;
+  stroke: var(--vw-cor);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  paint-order: stroke;
+  filter: drop-shadow(0 0 1.5px rgba(255, 255, 255, 0.95));
+}
+
+.vw-guia__ponto { fill: var(--vw-cor); stroke: #fff; stroke-width: 1.6; }
+.vw-guia__halo {
+  fill: var(--vw-cor);
+  opacity: 0.22;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: vw-pulso 2.4s ease-in-out infinite;
+}
+
+@keyframes vw-pulso {
+  0%, 100% { transform: scale(0.8); opacity: 0.26; }
+  50% { transform: scale(1.5); opacity: 0.06; }
+}
+
+/* marcador numerado: em telas estreitas a etiqueta com texto curto vira um selo pequeno */
+.vw-etiqueta__curto { display: none; }
+.vw-etiquetas--compacto .vw-etiqueta--com-curto .vw-etiqueta__curto { display: block; font-variant-numeric: tabular-nums; }
+.vw-etiquetas--compacto .vw-etiqueta--com-curto .vw-etiqueta__marca { display: none; }
+.vw-etiquetas--compacto .vw-etiqueta--com-curto .vw-etiqueta__texto {
+  position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+.vw-etiquetas--compacto .vw-etiqueta--com-curto .vw-etiqueta__corpo {
+  min-width: 28px; min-height: 24px; padding: 3px 7px; justify-content: center; border-left-width: 1px; border-radius: 999px;
+  font-size: 11px; letter-spacing: 0.04em;
+}
+
+/* ------------------------------------------------------------------ dica (peça sob o cursor) */
+.vw-dica {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 300px;
+  padding: 6px 11px;
+  border-radius: 999px;
+  background: rgba(20, 27, 28, 0.9);
+  color: #f3f6f6;
+  font: 500 12px/1.2 inherit;
+  font-family: inherit;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+.vw-dica.is-visivel { opacity: 1; }
+.vw-dica strong { font-weight: 650; }
+.vw-dica__escopo { opacity: 0.7; }
+.vw-dica__marca { width: 8px; height: 8px; border-radius: 50%; background: var(--vw-neutro); flex: none; }
+.vw-dica__marca--incluso { background: #19c466; }
+.vw-dica__marca--nao-incluso { background: #ff4a44; }
+.vw-dica__marca--existente { background: #b4babd; }
+
+/* ------------------------------------------------------------------ telas estreitas */
+@media (max-width: 560px) {
+  .vw-etiqueta { max-width: min(168px, 44vw); }
+  .vw-etiqueta__corpo { font-size: 11px; padding: 5px 9px 5px 8px; gap: 6px; border-left-width: 3px; }
+  .vw-etiqueta__marca { width: 6px; height: 6px; }
+}
+
+/* ------------------------------------------------------------------ movimento reduzido */
+.vw--reduzido .vw-etiqueta,
+.vw--reduzido .vw-guia,
+.vw--reduzido .vw-dica,
+.vw--reduzido .vw-etiqueta__corpo { transition: none; }
+.vw--reduzido .vw-guia__halo { animation: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .vw-etiqueta, .vw-guia, .vw-dica, .vw-etiqueta__corpo { transition: none; }
+  .vw-guia__halo { animation: none; }
+}

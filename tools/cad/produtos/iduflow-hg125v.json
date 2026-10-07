@@ -1,0 +1,223 @@
+{
+  "id": "iduflow-hg125v",
+  "nome": "Soprador IduFlow HG125V",
+  "linha": "IduFlow",
+  "origem": {
+    "id": "cad-hg125",
+    "descricao": "Montagem HG-125 4p-30kw (SolidWorks 2024), exportada em STEP AP203"
+  },
+  "rotacaoY": 0,
+  "grupos": [
+    {
+      "id": "soprador",
+      "rotulo": "Soprador",
+      "descricao": "Cabeçote do soprador de lóbulos sobre o pedestal da base.",
+      "cor": [
+        0.85,
+        0.86,
+        0.87
+      ],
+      "selecionar": [
+        {
+          "no": "_-1-solid9_1$"
+        },
+        {
+          "no": "_-1-solid7_1$"
+        }
+      ]
+    },
+    {
+      "id": "admissao",
+      "rotulo": "Filtro e silenciador de admissão",
+      "descricao": "Conjunto de admissão montado sobre o soprador.",
+      "cor": [
+        0.78,
+        0.8,
+        0.82
+      ],
+      "selecionar": [
+        {
+          "no": "_-1-solid8_1$"
+        }
+      ]
+    },
+    {
+      "id": "descarga",
+      "rotulo": "Saída de descarga",
+      "descricao": "Tubo de saída do silenciador com flanges e válvula de alívio.",
+      "cor": [
+        0.78,
+        0.8,
+        0.82
+      ],
+      "selecionar": [
+        {
+          "no": "_-1-solid1_1$"
+        },
+        {
+          "no": "_-1-solid2_1$"
+        }
+      ]
+    },
+    {
+      "id": "conexao-elastica",
+      "rotulo": "Conexão elástica",
+      "descricao": "Junta elástica entre o silenciador e a válvula.",
+      "cor": [
+        0.15,
+        0.15,
+        0.16
+      ],
+      "metalico": 0.05,
+      "rugoso": 0.9,
+      "selecionar": [
+        {
+          "no": "弹接"
+        }
+      ]
+    },
+    {
+      "id": "valvula",
+      "rotulo": "Válvula de retenção",
+      "descricao": "Válvula de retenção na saída da linha de descarga.",
+      "cor": [
+        0.5,
+        0.52,
+        0.55
+      ],
+      "selecionar": [
+        {
+          "no": "单向阀"
+        }
+      ]
+    },
+    {
+      "id": "motor",
+      "rotulo": "Motor elétrico 30 kW · 4 polos",
+      "descricao": "Motor elétrico trifásico, 30 kW, 4 polos, montagem B3.",
+      "cor": [
+        0.55,
+        0.6,
+        0.66
+      ],
+      "selecionar": [
+        {
+          "no": "30KW-4P"
+        }
+      ]
+    },
+    {
+      "id": "base-motor",
+      "rotulo": "Base basculante do motor",
+      "descricao": "Base articulada com esticador para o ajuste das correias.",
+      "cor": [
+        0.35,
+        0.37,
+        0.4
+      ],
+      "selecionar": [
+        {
+          "no": "_-1-solid10_1$"
+        },
+        {
+          "no": "_-1-solid11_1$"
+        },
+        {
+          "no": "_-1-solid13_1$"
+        },
+        {
+          "no": "_-1-solid1_2$"
+        },
+        {
+          "no": "_-1-solid3_1$"
+        },
+        {
+          "no": "_-1-solid4_1$"
+        },
+        {
+          "no": "_-1-solid5_1$"
+        },
+        {
+          "no": "_-1-solid6_1$"
+        },
+        {
+          "no": "_-1-solid12_1$"
+        },
+        {
+          "no": "D80Xd14X240"
+        },
+        {
+          "no": "Nface2_"
+        },
+        {
+          "no": "GB_uT 15389"
+        }
+      ]
+    },
+    {
+      "id": "transmissao",
+      "rotulo": "Polias da transmissão",
+      "descricao": "Polias de correias em V, perfil SPC.",
+      "cor": [
+        0.45,
+        0.47,
+        0.5
+      ],
+      "selecionar": [
+        {
+          "no": "SPC"
+        }
+      ]
+    },
+    {
+      "id": "protecao",
+      "rotulo": "Proteção das correias",
+      "descricao": "Carenagem de proteção da transmissão.",
+      "cor": [
+        0.3,
+        0.33,
+        0.36
+      ],
+      "selecionar": [
+        {
+          "no": "_-1-solid15_1$"
+        },
+        {
+          "no": "_-1-solid16_1$"
+        }
+      ]
+    },
+    {
+      "id": "base",
+      "rotulo": "Base com silenciador de descarga",
+      "descricao": "Base estrutural com silenciador de descarga integrado e pedestal do soprador (um só sólido no CAD).",
+      "cor": [
+        0.3,
+        0.33,
+        0.36
+      ],
+      "selecionar": [
+        {
+          "no": "_-1-solid14_1$"
+        }
+      ]
+    },
+    {
+      "id": "amortecedores",
+      "rotulo": "Amortecedores de vibração",
+      "descricao": "Seis amortecedores entre a base e o piso.",
+      "cor": [
+        0.12,
+        0.12,
+        0.13
+      ],
+      "metalico": 0.05,
+      "rugoso": 0.9,
+      "selecionar": [
+        {
+          "no": "减震器"
+        }
+      ]
+    }
+  ]
+}
