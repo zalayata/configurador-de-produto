@@ -75,6 +75,14 @@ Quando quiser servir em domínio próprio (ex.: `configurador.idugel.com.br`), b
 | Acabamentos, grupos, opcionais e linhas | `src/config/product.ts` |
 | Produto demonstrativo 3D | `src/three/DemoModel.tsx` |
 
+## Controle de produção — Dosador Horizon
+
+Segunda página do mesmo `dist/`: **[horizon.html](https://zalayata.github.io/configurador-de-produto/horizon.html)** — acompanhamento da produção do **Dosador Horizon** em nove capítulos (`#pedido` → `#engenharia` → `#suprimentos` → `#fabricacao` → `#pintura` → `#montagem` → `#testes` → `#expedicao` → `#atualizacoes`), com o modelo 3D do dosador se montando conforme a etapa, linha do tempo com as 8 etapas, passos de cada etapa, histórico, fotos e folha de impressão A4 com o selo oficial. Status e percentual saem da data de hoje e de `public/horizon/andamento.json`: trocar só esse arquivo muda a página, sem novo build.
+
+- [Guia de publicação e aceite](docs/horizon/GUIA.md) — o que é a página, como publicar, como atualizar sem rebuild, regras de conteúdo, matriz de aceite e os dados que a equipe ainda precisa conferir (o JSON de hoje é um plano inicial).
+- [Contrato do `andamento.json`](docs/horizon/CONTRATO-ANDAMENTO.md) — campo a campo, regra de cálculo, ids dos passos, o que invalida o arquivo e exemplos.
+- [Prompt para atualizar o andamento](docs/horizon/PROMPT-ATUALIZAR-ANDAMENTO.txt) — texto curto para quem publica a atualização.
+
 ## Próximos passos sugeridos
 
 - Catálogo de produtos reais: exportar cada equipamento do Inventor como STEP, converter em GLB pelo próprio app e commitar em `public/models/`.

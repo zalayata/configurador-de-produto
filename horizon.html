@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="Controle de produção do Dosador Horizon — Grupo Idugel: etapas, datas, andamento e histórico da fabricação, com o equipamento em 3D." />
+    <meta name="theme-color" content="#0b0e11" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/svg+xml" href="./logo-idugel.svg" />
+    <title>Controle de produção — Dosador Horizon · Grupo Idugel</title>
+    <!-- andamento da produção pedido já na leitura do HTML (antes do CSS e dos módulos), sempre conferido com o
+         servidor (cache: no-cache); andamento.ts reaproveita esta mesma resposta. Sem <link rel="preload">: com
+         cache longo na hospedagem, o preload esconderia a troca do JSON. -->
+    <script>
+      try {
+        window.__andamentoInicial = {
+          url: new URL('./horizon/andamento.json', document.baseURI).href,
+          resposta: fetch('./horizon/andamento.json', { cache: 'no-cache', credentials: 'same-origin' }).catch(function () { return null; })
+        };
+      } catch (e) { /* sem fetch: andamento.ts pede sozinho */ }
+    </script>
+    <style>
+      html, body { background: #0b0e11; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/horizon/main.tsx"></script>
+  </body>
+</html>

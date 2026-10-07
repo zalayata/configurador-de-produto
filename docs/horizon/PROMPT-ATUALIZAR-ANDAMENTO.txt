@@ -1,0 +1,28 @@
+Atualize SOMENTE o andamento da produção na página "Controle de produção — Dosador Horizon" (Grupo Idugel) já publicada em …/horizon.html. Não há novo build nem redesenho.
+
+O QUE FAZER
+1. Substitua o arquivo `horizon/andamento.json` pelo arquivo anexo, mantendo o mesmo caminho e o tipo `application/json`.
+   - Pelo repositório: troque `public/horizon/andamento.json` e faça commit na `main`; o deploy do GitHub Pages republica sozinho.
+   - Na hospedagem própria: troque o arquivo na pasta publicada e invalide o cache.
+2. Se houver fotos anexas, coloque-as em `horizon/fotos/` (no repositório, `public/horizon/fotos/`) com os nomes exatos referenciados no JSON.
+3. Abra `…/horizon.html` e recarregue.
+4. Devolva: a URL, a etapa e o percentual exibidos na linha do tempo, e a data de "Atualizado em" mostrada no capítulo Atualizações.
+
+NÃO FAÇA
+- Não altere nenhum outro arquivo (HTML, JS, CSS, imagens, `index.html`).
+- Não mude a estrutura do JSON: as 8 etapas ficam com os ids `pedido, engenharia, suprimentos, fabricacao, pintura, montagem, testes, expedicao`, nesta ordem; só os valores mudam.
+- Não acrescente textos, avisos, "previsão", "a confirmar", preços nem nomes de terceiros (fornecedores, transportadoras).
+
+SE O JSON NÃO CARREGAR
+A página mostra o texto de contato da equipe no lugar das datas. Pare, informe o erro exato (mensagem do console e URL) e aguarde. Não corrija "de cabeça".
+
+REFERÊNCIA RÁPIDA DO JSON (detalhes em docs/horizon/CONTRATO-ANDAMENTO.md)
+- Datas em ISO: "aaaa-mm-dd" (data real: "2027-02-30" e "10/02/2027" invalidam o arquivo).
+- Cálculo automático: cada etapa avança pela data (antes do início = Programada; do início até a véspera do fim = Em andamento · n %; a partir da data de fim = Concluída). Os passos de cada etapa seguem o percentual dela.
+- As etapas são sequenciais: uma etapa só fica em andamento ou concluída quando a anterior está concluída. Nunca há duas em andamento.
+- Para remarcar uma etapa: altere `inicio`/`fim` dela (e das seguintes) em `etapas`, mantendo as datas crescentes — ou preencha `ajustes[etapa].inicio`/`fim`.
+- Para sobrepor o cálculo: `ajustes[etapa] = { "status": "concluida"|"em-andamento"|"programada", "percentual": 0–100, "realizadoEm": "aaaa-mm-dd", "inicio": "aaaa-mm-dd", "fim": "aaaa-mm-dd", "mensagem": "texto curto", "passos": { "<idDoPasso>": "concluida"|"em-andamento"|"programada" } }`. Use só os campos que quiser sobrepor (os outros ficam de fora ou `null`); apague o bloco para voltar ao automático.
+- Para fechar uma etapa: informe `realizadoEm` (a data real); sem ele, "Concluída em" mostra a data de fim da etapa.
+- Só aparecem na tela as datas marcadas em `datasPublicas` de cada etapa (padrão: início e fim).
+- Registre a mudança em `atualizacoes`: { "data": "aaaa-mm-dd", "etapa": "<id>", "texto": "…" } e atualize `atualizadoEm`. Registro com data futura só aparece a partir da data.
+- Foto: { "arquivo": "horizon/fotos/aaaa-mm-dd-nome.webp", "data": "aaaa-mm-dd", "etapa": "<id>", "legenda": "…" }.

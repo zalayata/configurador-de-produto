@@ -1,0 +1,1207 @@
+/* Controle de produção — Dosador Horizon.
+   Complementa src/styles/global.css (tokens, .topbar, .panel, .btn, .tool-chip, .toast, impressão).
+   Classes novas com prefixo hz-. Progresso em cromo/branco (trilho, concluída, em andamento) — o vermelho da
+   marca fica no selo e nos acentos de interface já existentes (--accent). */
+
+:root {
+  --ldt-trilho: #b9c6cf;
+  --ldt-feito: #ffffff;
+  --ldt-ativo: #e6f0f6;
+  --ldt-ativo-sombra: rgba(230, 240, 246, 0.55);
+  /* largura do painel (global.css .panel) e altura da linha do tempo no desktop */
+  --hz-painel-l: 396px;
+  --hz-ldt-h: 96px;
+  /* altura da folha inferior no celular */
+  --hz-folha: 56vh;
+}
+
+@supports (height: 1svh) {
+  :root {
+    --hz-folha: 56svh;
+  }
+}
+
+/* foco visível em toda a página */
+.horizon :focus-visible {
+  outline: 2px solid var(--accent-hi);
+  outline-offset: 2px;
+}
+
+.horizon .viewer-wrap {
+  transition: filter 0.5s ease;
+}
+
+/* capítulo em papel (Atualizações): o palco escurece e recua */
+.horizon--papel .viewer-wrap {
+  filter: brightness(0.55) saturate(0.8);
+}
+
+/* ───────────────────────── topbar ───────────────────────── */
+
+.hz-topbar {
+  gap: 16px;
+}
+
+.hz-topbar-brand {
+  min-width: 0;
+}
+
+.hz-marca {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  border-radius: 8px;
+}
+
+.hz-marca:focus-visible {
+  outline-offset: 4px;
+}
+
+.hz-pilula {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: rgba(15, 19, 24, 0.62);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-size: 12.5px;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.hz-pilula-texto {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hz-pilula-extra {
+  padding-left: 8px;
+  border-left: 1px solid var(--line-strong);
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.hz-pilula--situacao {
+  font-variant-numeric: tabular-nums;
+}
+
+.hz-pilula-no {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ldt-trilho);
+}
+
+.hz-pilula--concluida .hz-pilula-no {
+  background: var(--ldt-feito);
+  border-color: var(--ldt-feito);
+}
+
+.hz-pilula--em-andamento .hz-pilula-no {
+  background: var(--ldt-ativo);
+  border-color: var(--ldt-ativo);
+  animation: hz-pulso 2.4s ease-out infinite;
+}
+
+.hz-btn {
+  min-height: 38px;
+}
+
+.hz-btn-icone {
+  flex: none;
+  width: 16px;
+  height: 16px;
+}
+
+/* ───────────────────────── painel ───────────────────────── */
+
+.hz-painel-head {
+  padding-bottom: 16px;
+}
+
+.hz-claquete {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.hz-claquete-num {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  color: var(--accent-hi);
+  font-variant-numeric: tabular-nums;
+}
+
+.hz-claquete-nome {
+  font-size: 12px;
+}
+
+.hz-titulo {
+  font-size: 24px;
+}
+
+.hz-status {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.hz-status-no {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ldt-trilho);
+}
+
+.hz-status--concluida {
+  color: var(--text);
+}
+
+.hz-status--concluida .hz-status-no {
+  background: var(--ldt-feito);
+  border-color: var(--ldt-feito);
+}
+
+.hz-status--em-andamento {
+  color: var(--ldt-ativo);
+}
+
+.hz-status--em-andamento .hz-status-no {
+  background: var(--ldt-ativo);
+  border-color: var(--ldt-ativo);
+  animation: hz-pulso 2.4s ease-out infinite;
+}
+
+.hz-corpo {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.hz-lead {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--text-dim);
+}
+
+/* barra de progresso (cromo → branco) */
+.hz-barra {
+  position: relative;
+  height: 4px;
+  border-radius: 99px;
+  background: rgba(185, 198, 207, 0.22);
+  overflow: hidden;
+}
+
+.hz-barra-valor {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  transform-origin: left center;
+  transform: scaleX(var(--p, 0));
+  background: linear-gradient(90deg, var(--ldt-feito), var(--ldt-ativo));
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* dados (termo / valor) */
+.hz-dados {
+  margin: 0;
+}
+
+.hz-dado {
+  display: grid;
+  grid-template-columns: minmax(0, 42%) minmax(0, 1fr);
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+
+.hz-dado:last-child {
+  border-bottom: none;
+}
+
+.hz-dado dt {
+  color: var(--text-dim);
+}
+
+.hz-dado dd {
+  margin: 0;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+/* passos (checklist sem caixa de seleção) */
+.hz-passos {
+  list-style: none;
+  display: grid;
+  gap: 9px;
+}
+
+.hz-passo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.hz-passo-no {
+  position: relative;
+  flex: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ldt-trilho);
+}
+
+.hz-passo--em-andamento {
+  color: var(--ldt-ativo);
+}
+
+.hz-passo--em-andamento .hz-passo-no {
+  border-color: var(--ldt-ativo);
+  animation: hz-pulso 2.4s ease-out infinite;
+}
+
+.hz-passo--em-andamento .hz-passo-no::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--ldt-ativo);
+}
+
+.hz-passo--concluida {
+  color: var(--text);
+}
+
+.hz-passo--concluida .hz-passo-no {
+  background: var(--ldt-feito);
+  border-color: var(--ldt-feito);
+}
+
+.hz-mensagem {
+  padding: 10px 14px;
+  border-left: 2px solid var(--ldt-ativo);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: rgba(230, 240, 246, 0.06);
+  font-size: 13px;
+  color: var(--text);
+}
+
+/* fotos */
+.hz-fotos {
+  list-style: none;
+  display: flex;
+  gap: 10px;
+  padding: 2px 0 6px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+
+.hz-foto {
+  display: grid;
+  gap: 4px;
+  width: 80px;
+  border-radius: 8px;
+  text-align: left;
+}
+
+.hz-foto img {
+  display: block;
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid var(--line-strong);
+  background: var(--bg-raise);
+  transition: border-color 0.2s ease;
+}
+
+.hz-foto:hover img {
+  border-color: var(--text-dim);
+}
+
+.hz-foto-data {
+  font-size: 12px;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+/* lista das 8 etapas */
+.hz-etapas {
+  list-style: none;
+  display: grid;
+  gap: 6px;
+}
+
+.hz-etapa-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 7px 10px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  text-decoration: none;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.hz-etapa-link:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--line);
+}
+
+.hz-etapa-link[aria-current='page'] {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--line-strong);
+}
+
+.hz-etapa-no {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ldt-trilho);
+  color: var(--text-dim);
+}
+
+.hz-etapa-icone {
+  width: 16px;
+  height: 16px;
+}
+
+.hz-etapa--concluida .hz-etapa-no {
+  background: var(--ldt-feito);
+  border-color: var(--ldt-feito);
+  color: var(--bg);
+}
+
+.hz-etapa--em-andamento .hz-etapa-no {
+  border-color: var(--ldt-ativo);
+  color: var(--ldt-ativo);
+  box-shadow: 0 0 0 3px rgba(230, 240, 246, 0.14);
+}
+
+.hz-etapa-texto {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+}
+
+.hz-etapa-nome {
+  font-size: 13.5px;
+  font-weight: 500;
+}
+
+.hz-etapa-estado {
+  font-size: 12px;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.hz-etapa--em-andamento .hz-etapa-estado {
+  color: var(--ldt-ativo);
+}
+
+.hz-atualizado {
+  font-size: 12px;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+/* blocos do capítulo em papel */
+.hz-papel-grade {
+  display: grid;
+  gap: 20px;
+}
+
+.hz-bloco {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+
+.hz-bloco-titulo {
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.hz-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: start;
+  gap: 10px;
+}
+
+.hz-historico {
+  list-style: none;
+  display: grid;
+  gap: 12px;
+}
+
+.hz-registro {
+  display: grid;
+  gap: 3px;
+  padding-left: 14px;
+  border-left: 1px solid var(--line-strong);
+}
+
+.hz-registro-meta {
+  display: flex;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.hz-registro-texto {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.hz-vazio {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.hz-contato {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.hz-contato a,
+.hz-contato-linha a {
+  color: var(--text);
+}
+
+.hz-contato-selo {
+  height: 40px;
+  width: auto;
+  justify-self: start;
+  /* selo oficial em vinho, sem redesenho — mesmo realce da topbar */
+  filter: brightness(1.55) saturate(1.15);
+}
+
+.hz-contato-razao {
+  font-weight: 500;
+  color: var(--text);
+}
+
+.hz-contato-tagline {
+  font-style: italic;
+}
+
+.hz-contato-linha {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+/* ───────────────────────── linha do tempo ───────────────────────── */
+
+.hz-ldt {
+  position: absolute;
+  left: 26px;
+  right: calc(var(--hz-painel-l) + 48px);
+  bottom: 14px;
+  height: var(--hz-ldt-h);
+  z-index: 20;
+  /* a entrada anima a lista (não este nó): a opacidade daqui fica livre para esconder no capítulo em papel */
+  transition:
+    opacity 0.3s ease,
+    visibility 0s;
+}
+
+/* gradiente escuro atrás do trilho (legibilidade sobre o 3D) */
+.hz-ldt::before {
+  content: '';
+  position: absolute;
+  left: -26px;
+  right: calc(-1 * (var(--hz-painel-l) + 48px));
+  top: -28px;
+  bottom: -14px;
+  z-index: -1;
+  background: linear-gradient(to top, rgba(11, 14, 17, 0.92) 45%, rgba(11, 14, 17, 0));
+  pointer-events: none;
+}
+
+.hz-ldt-lista {
+  display: flex;
+  height: 100%;
+  list-style: none;
+  animation: fade-up 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) 0.25s both;
+}
+
+.hz-ldt-item {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.hz-ldt-item--extra {
+  flex: 0 0 auto;
+}
+
+.hz-ldt-marco {
+  position: relative;
+  display: grid;
+  grid-template-rows: 36px auto;
+  /* a coluna nunca passa da largura do item: nome e estado cortam com reticências em vez de invadir o vizinho */
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: start;
+  align-content: start;
+  gap: 6px;
+  height: 100%;
+  min-height: 44px;
+  padding-right: 12px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.hz-ldt-no {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg);
+  color: var(--text-dim);
+  box-shadow: inset 0 0 0 1.5px rgba(185, 198, 207, 0.55);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.hz-ldt-icone {
+  width: 18px;
+  height: 18px;
+}
+
+/* anel de progresso (só em andamento): r = 18, circunferência 113,1 */
+.hz-ldt-anel {
+  position: absolute;
+  inset: -2px;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  transform: rotate(-90deg);
+  display: none;
+}
+
+.hz-ldt-anel circle {
+  fill: none;
+  stroke-width: 2;
+}
+
+.hz-ldt-anel-fundo {
+  stroke: rgba(185, 198, 207, 0.3);
+}
+
+.hz-ldt-anel-valor {
+  stroke: var(--ldt-ativo);
+  stroke-linecap: round;
+  stroke-dashoffset: calc(113.1 * (1 - var(--p, 0)));
+  transition: stroke-dashoffset 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* trilho entre nós: branco na parte percorrida (--seg), cromo no restante */
+.hz-ldt-item:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 36px;
+  right: 0;
+  top: 17px;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--ldt-feito) calc(var(--seg, 0) * 100%),
+    rgba(185, 198, 207, 0.38) calc(var(--seg, 0) * 100%)
+  );
+}
+
+.hz-ldt-item--concluida {
+  --seg: 1;
+}
+
+.hz-ldt-item--em-andamento {
+  --seg: var(--p, 0);
+}
+
+.hz-ldt-item--programada {
+  --seg: 0;
+}
+
+.hz-ldt-item--concluida .hz-ldt-no {
+  background: var(--ldt-feito);
+  color: var(--bg);
+  box-shadow: none;
+}
+
+.hz-ldt-item--em-andamento .hz-ldt-no {
+  color: var(--ldt-ativo);
+  box-shadow: none;
+  animation: hz-pulso 2.4s ease-out infinite;
+}
+
+.hz-ldt-item--em-andamento .hz-ldt-anel {
+  display: block;
+}
+
+.hz-ldt-texto {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1px;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+.hz-ldt-nome,
+.hz-ldt-estado {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.hz-ldt-nome {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hz-ldt-item--programada .hz-ldt-nome {
+  color: var(--text-dim);
+}
+
+.hz-ldt-estado {
+  font-size: 11.5px;
+  line-height: 1.25;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.hz-ldt-estado-a,
+.hz-ldt-estado-b {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hz-ldt-estado-sep {
+  display: none;
+}
+
+.hz-ldt-item--em-andamento .hz-ldt-estado {
+  color: var(--ldt-ativo);
+}
+
+.hz-ldt-item--concluida .hz-ldt-estado {
+  color: var(--text);
+}
+
+/* capítulo aberto: contorno fino em volta do nó */
+.hz-ldt-item--aqui .hz-ldt-no {
+  transform: scale(1.08);
+  outline: 1px solid var(--text);
+  outline-offset: 3px;
+}
+
+.hz-ldt-marco:hover .hz-ldt-no {
+  outline: 1px solid var(--ldt-trilho);
+  outline-offset: 3px;
+}
+
+/* foco de teclado: anel de 2 px por fora do contorno do capítulo aberto */
+.hz-ldt-marco:focus-visible {
+  outline: none;
+}
+
+.hz-ldt-marco:focus-visible .hz-ldt-no::after {
+  content: '';
+  position: absolute;
+  inset: -7px;
+  border-radius: 50%;
+  border: 2px solid var(--accent-hi);
+  pointer-events: none;
+}
+
+.hz-ldt-marco:focus-visible .hz-ldt-nome {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+/* ───────────────────────── ferramentas do palco ───────────────────────── */
+
+.hz-ferramentas {
+  bottom: calc(var(--hz-ldt-h) + 28px);
+}
+
+/* ───────────────────────── avisos ───────────────────────── */
+
+.hz-toast {
+  bottom: calc(var(--hz-ldt-h) + 28px);
+  cursor: pointer;
+  color: var(--text);
+}
+
+.hz-foto-veu {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(11, 14, 17, 0.86);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: hz-aparecer 0.25s ease both;
+}
+
+.hz-foto-dialogo {
+  position: relative;
+  display: grid;
+  gap: 12px;
+  max-width: min(1100px, 100%);
+  max-height: 100%;
+}
+
+.hz-foto-imagem {
+  display: block;
+  max-width: 100%;
+  max-height: calc(100vh - 140px);
+  margin: 0 auto;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line-strong);
+  background: var(--bg-raise);
+}
+
+@supports (height: 1svh) {
+  .hz-foto-imagem {
+    max-height: calc(100svh - 140px);
+  }
+}
+
+.hz-foto-legenda {
+  text-align: center;
+  font-size: 13.5px;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.hz-foto-fechar {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  background: var(--panel-solid);
+  color: var(--text);
+  box-shadow: var(--shadow-panel);
+}
+
+.hz-foto-fechar:hover {
+  border-color: var(--text-dim);
+}
+
+/* ───────────────────────── animações ───────────────────────── */
+
+@keyframes hz-pulso {
+  0% {
+    box-shadow: 0 0 0 0 var(--ldt-ativo-sombra);
+  }
+  70% {
+    box-shadow: 0 0 0 9px rgba(230, 240, 246, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(230, 240, 246, 0);
+  }
+}
+
+@keyframes hz-aparecer {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hz-ldt-item--em-andamento .hz-ldt-no,
+  .hz-status--em-andamento .hz-status-no,
+  .hz-passo--em-andamento .hz-passo-no,
+  .hz-pilula--em-andamento .hz-pilula-no {
+    animation-play-state: paused;
+  }
+
+  .hz-ldt,
+  .hz-foto-veu,
+  .horizon .panel,
+  .horizon .topbar,
+  .horizon .viewport-tools,
+  .horizon .panel-scroll {
+    animation: none;
+  }
+
+  .hz-barra-valor,
+  .hz-ldt-anel-valor,
+  .hz-ldt-no,
+  .horizon .viewer-wrap {
+    transition: none;
+  }
+}
+
+/* ───────────────────────── desktop ───────────────────────── */
+
+@media (min-width: 981px) {
+  /* painel de atualizações mais largo */
+  .hz-painel--papel {
+    width: min(760px, 60vw);
+  }
+
+  .hz-painel--papel .hz-papel-grade {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 20px 28px;
+  }
+
+  .hz-painel--papel .hz-bloco--largo {
+    grid-column: 1 / -1;
+  }
+
+  /* no capítulo em papel a linha do tempo some (o painel ocupa o lugar) */
+  .horizon--papel .hz-ldt {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 0.3s ease,
+      visibility 0s linear 0.3s;
+  }
+
+  .horizon--papel .hz-toast {
+    bottom: 26px;
+  }
+}
+
+@media (min-width: 981px) {
+  /* "Atualizações" ocupa só o necessário; a largura fica com as 8 etapas */
+  .hz-ldt-item--extra {
+    max-width: 112px;
+  }
+
+  /* a etapa em andamento tem o texto mais longo ("Em andamento · 50 %"): recebe mais largura que as demais */
+  .hz-ldt-item--em-andamento {
+    flex-grow: 1.7;
+  }
+}
+
+@media (min-width: 981px) and (max-width: 1280px) {
+  .hz-ldt-nome {
+    letter-spacing: 0.08em;
+  }
+
+  .hz-ldt-marco {
+    padding-right: 8px;
+  }
+}
+
+@media (min-width: 981px) and (max-width: 1200px) {
+  /* janela estreita: o item "Atualizações" sai da linha do tempo (fica em "Próximo" na Expedição e no #atualizacoes) */
+  .hz-ldt-item--extra {
+    display: none;
+  }
+
+  .hz-ldt-item:nth-last-child(2)::before {
+    display: none;
+  }
+}
+
+@media (min-width: 981px) and (max-height: 720px) {
+  :root {
+    --hz-ldt-h: 84px;
+  }
+}
+
+/* ───────────────────────── celular ───────────────────────── */
+
+@media (max-width: 980px) {
+  .hz-topbar {
+    gap: 8px;
+    padding: 10px 12px;
+  }
+
+  .hz-topbar .brand-seal {
+    height: 32px;
+  }
+
+  .hz-pilula--equipamento {
+    max-width: 34vw;
+    padding: 4px 10px;
+    font-size: 12px;
+  }
+
+  .hz-pilula-extra,
+  .hz-pilula--situacao,
+  .hz-btn-rotulo {
+    display: none;
+  }
+
+  .hz-btn {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0 12px;
+  }
+
+  .hz-btn-icone {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* faixa horizontal rolável logo abaixo da topbar */
+  .hz-ldt {
+    top: 66px;
+    left: 0;
+    right: 0;
+    bottom: auto;
+    height: 56px;
+    padding: 4px 12px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 16px), transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 16px), transparent);
+  }
+
+  .hz-ldt::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hz-ldt::before {
+    display: none;
+  }
+
+  .hz-ldt-lista {
+    width: max-content;
+    height: 48px;
+    gap: 6px;
+  }
+
+  .hz-ldt-item {
+    flex: 0 0 auto;
+    scroll-snap-align: center;
+  }
+
+  .hz-ldt-item:not(:last-child)::before {
+    display: none;
+  }
+
+  .hz-ldt-marco {
+    grid-template-rows: none;
+    grid-template-columns: 30px auto;
+    align-items: center;
+    align-content: center;
+    gap: 8px;
+    height: 48px;
+    padding: 0 14px 0 8px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    background: rgba(15, 19, 24, 0.55);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .hz-ldt-item--aqui .hz-ldt-marco {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--line-strong);
+  }
+
+  .hz-ldt-item--aqui .hz-ldt-no {
+    transform: none;
+    outline: none;
+  }
+
+  .hz-ldt-no {
+    width: 30px;
+    height: 30px;
+  }
+
+  .hz-ldt-icone {
+    width: 16px;
+    height: 16px;
+  }
+
+  .hz-ldt-texto {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  .hz-ldt-nome {
+    letter-spacing: 0.1em;
+  }
+
+  .hz-ldt-estado-b {
+    display: none;
+  }
+
+  .hz-ldt-marco:focus-visible {
+    outline: 2px solid var(--accent-hi);
+    outline-offset: 0;
+  }
+
+  .hz-ldt-marco:focus-visible .hz-ldt-no::after {
+    display: none;
+  }
+
+  /* o palco 3D ocupa só a área visível entre a faixa da linha do tempo e a folha: a câmera enquadra o modelo
+     nessa janela (e não no centro da tela, que a folha cobre) e a proporção fica mais larga que alta */
+  .horizon .viewer-wrap {
+    top: 122px;
+    bottom: var(--hz-folha);
+  }
+
+  .horizon--papel .viewer-wrap {
+    top: 0;
+    bottom: 0;
+  }
+
+  /* folha inferior: cabeçalho compacto, área segura embaixo */
+  .hz-painel {
+    max-height: var(--hz-folha);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* alvos de toque ≥ 44 px no rodapé da folha */
+  .hz-painel-foot .btn {
+    min-height: 44px;
+  }
+
+  .hz-painel--papel {
+    width: auto;
+  }
+
+  .hz-painel-head {
+    padding: 10px 16px 8px;
+  }
+
+  .hz-claquete {
+    margin-bottom: 4px;
+  }
+
+  .hz-titulo {
+    font-size: 18px;
+  }
+
+  .hz-status {
+    margin-top: 6px;
+    font-size: 12.5px;
+  }
+
+  .hz-corpo {
+    gap: 12px;
+    padding: 12px 16px;
+  }
+
+  .hz-painel-foot {
+    padding: 8px 16px;
+  }
+
+  .hz-dado {
+    grid-template-columns: minmax(0, 46%) minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .hz-acoes .btn {
+    flex: 1 1 auto;
+    min-height: 44px;
+  }
+
+  /* ferramentas acima da folha; toast abaixo da faixa da linha do tempo */
+  .hz-ferramentas {
+    left: 12px;
+    bottom: calc(var(--hz-folha) + 12px);
+  }
+
+  .hz-tool {
+    min-width: 44px;
+    min-height: 44px;
+    justify-content: center;
+  }
+
+  .hz-toast {
+    top: 132px;
+    bottom: auto;
+  }
+
+  .hz-foto-veu {
+    padding: 16px;
+  }
+
+  .hz-foto-fechar {
+    top: -6px;
+    right: -6px;
+  }
+}
+
+@media (max-width: 360px) {
+  /* telas muito estreitas: só o selo e as ações na topbar (o equipamento aparece no painel) */
+  .hz-pilula--equipamento {
+    display: none;
+  }
+}
+
+/* ───────────────────────── impressão ───────────────────────── */
+
+@media print {
+  /* a folha de impressão (FolhaImpressao.tsx / impressao.css) é o único conteúdo impresso */
+  .app.horizon {
+    display: none !important;
+  }
+}
